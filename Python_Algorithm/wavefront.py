@@ -81,7 +81,7 @@ def wavefront(map, algorithm_map, start_position, goal_position, status_code):
             current_column_index = column_index + column_direction
 
             # Prior to saving the distance it is checked, if the tile is a valid neighbour
-            if is_valid_neighbour_tile:
+            if is_valid_neighbour_tile(current_column_index, current_row_index, map, algorithm_map):
                     # The determined distance gets saved to the algorithm_map and the field gets added to the position_queue and visited_positions
                     algorithm_map[current_row_index][current_column_index] = distance + 1
                     position_queue.append((current_row_index, current_column_index, distance + 1))
