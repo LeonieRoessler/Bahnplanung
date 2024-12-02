@@ -1,6 +1,6 @@
 import json
 
-def write_to_json(json_path, algorithm_map, status_code, path_length, computing_time, memory_usage):
+def write_to_json(json_path, algorithm_map, status_code, path_length, path, computing_time, memory_usage):
     """
     Writes the results of a path planning algorithm to a JSON-file.
 
@@ -16,6 +16,7 @@ def write_to_json(json_path, algorithm_map, status_code, path_length, computing_
         "algorithm_map": algorithm_map,
         "status_code": status_code,
         "path_length": path_length,
+        "path": path,
         "computing_time": computing_time,
         "memory_usage": memory_usage
     }

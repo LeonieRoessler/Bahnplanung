@@ -11,6 +11,13 @@
     ],
     "status_code": int,
     "path_length": int (tiles),
+    "path": [
+            [
+                int,
+                int
+            ],
+            ...
+        ]
     "computing_time": float (seconds),
     "memory_usage": float (MB)
 }
