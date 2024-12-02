@@ -52,7 +52,6 @@ def wavefront(map, algorithm_map, start_position, goal_position, status_code):
     tracemalloc.start()
 
     # Initializes all the components needed for the Wavefront-algorithm
-    row_number, column_number = len(map), len(map[0])
     directions = [(-1, 0), (1, 0), (0, -1), (0, 1)]
     position_queue = deque()
 
