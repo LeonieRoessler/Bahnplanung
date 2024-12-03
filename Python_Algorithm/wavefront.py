@@ -122,7 +122,7 @@ if __name__ == "__main__":
         csv_path (string): The path towards the CSV-file with the map the Wavefront-algorithm is supposed to be applied to.
         json_path (string): The path towards the JSON-file where the results of the Wavefront-algorithm are ssaved.
     """
-    parser = argparse.ArgumentParser(description="CSV zu JSON Konvertierung")
+    parser = argparse.ArgumentParser(description="Wavefront-Algorithmus auf Basis einer Map in einer CSV-Datei und Ausgabe in einer JSON-Datei")
     parser.add_argument("csv_path", help="Pfad zur Eingabe-CSV-Datei")
     parser.add_argument("json_path", help="Pfad zur Ausgabe-JSON-Datei")
     args = parser.parse_args()

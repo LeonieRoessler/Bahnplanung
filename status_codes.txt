@@ -2,6 +2,7 @@
 200 = Erfolg
 
 400er: Fehler beim Algorithmus/der Map
+401 = Bei A* falsche mathematische Funktion übergeben
 402 = kein Startpunkt
 403 = kein Zielpunkt
 404 = Zielpunkt nicht erreichbar
