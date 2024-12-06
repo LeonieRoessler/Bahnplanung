@@ -6,48 +6,66 @@ from math import sqrt
 from enum import Enum
 
 from read_from_csv import read_from_csv
+from reconstruct_path import reconstruct_path
 from write_to_json import write_to_json
 
 class HeuristicType(Enum):
     """An enumeration representing different types of heuristics for the A*-algorithm.
     
     Attributes:
-        MANHATTAN_DISTANCE: Represents the Manhattan distance (L1 norm).
-        AIRPLANE_DISTANCE: Represents the Euclidean distance (straight-line distance).
+        MANHATTAN_DISTANCE: Represents the Manhattan distance.
+        AIRPLANE_DISTANCE: Represents the Airplane distance.
     """
     MANHATTAN_DISTANCE = "manhattan"
     AIRPLANE_DISTANCE = "airplane"
 
 
-def calculate_manhattan_distance(current, goal):
-    """Calculate the Manhattan distance as the heuristic function for the A*-algorithm.
-    
+def calculate_manhattan_distance(current_position, goal_position):
+    """Calculate the Manhattan distance between two tiles.
+
     Arguments:
-        current (tuple[int, int]): The current position on the map.
-        goal (tuple[int, int]): The goal position on the map.
+        current_position (tuple[int, int]): The current position on the map.
+        goal_position (tuple[int, int]): The goal position on the map.
 
     Returns:
         int: The Manhattan distance between the current position and the goal.
     """
-    return abs(current[0] - goal[0]) + abs(current[1] - goal[1])
+    return abs(current_position[0] - goal_position[0]) + abs(current_position[1] - goal_position[1])
 
 
-def calculate_airplane_distance(current, goal):
-    """Calculate the Euclidean distance (Airplane Distance) as the heuristic function.
-    
+def calculate_airplane_distance(current_position, goal_position):
+    """Calculate the Airplane distance between two tiles.
+
     Arguments:
-        current (tuple[int, int]): The current position on the map.
-        goal (tuple[int, int]): The goal position on the map.
+        current_position (tuple[int, int]): The current position on the map.
+        goal_position (tuple[int, int]): The goal position on the map.
 
     Returns:
-        float: The Euclidean distance between the current position and the goal.
+        float: The Airplane distance between the current position and the goal.
     """
-    return sqrt((current[0] - goal[0])**2 + (current[1] - goal[1])**2)
+    return sqrt((current_position[0] - goal_position[0])**2 + (current_position[1] - goal_position[1])**2)
+
+def is_valid_neighbour_tile(row_index, column_index, map):
+    """Check if a given tile is part of the map, not an obstacle, and was not visited before.
+
+    Arguments:
+        row_index (int): The row index of the current position.
+        column_index (int): The columns index of the current position.
+        map (list[list[int]]): The map on which the A*-algorithm is applied.
+
+    Returns:
+        boolean: Returns whether the tile is a valid neighbour or not.
+    """
+    return (
+        0 <= row_index < len(map)
+        and 0 <= column_index < len(map[0])
+        and map[row_index][column_index] != 1
+    )
 
 
 def a_star(map, algorithm_map, start_position, goal_position, heuristic_type, status_code):
-    """Apply the A* Algorithm to find the shortest path in a grid-based map.
-    
+    """Apply the A* Algorithm.
+
     Arguments:
         map (list[list[int]]): The map in form of a list of lists of integers.
         algorithm_map (list[list[int]]): The prepared map in form of a list of lists of integers that will be overwritten by the A*-algorithm.
@@ -64,74 +82,83 @@ def a_star(map, algorithm_map, start_position, goal_position, heuristic_type, st
         float: The time the A*-algorithm needs to finish in seconds.
         float: The memory used during the execution in MB.
     """
+    # Checks if an error was encountered prior to the A*-algorithm
     if status_code != 200:
         return algorithm_map, status_code, -1, [], 0.0, 0.0
 
-    # Start time measurement and memory tracking
+    # Saves the start_time and the observation of the memory usage is started
     start_time = time.perf_counter()
     tracemalloc.start()
 
-    # Select the heuristic function based on the heuristic type
+    # Selects the heuristic function based on the heuristic_type argument
     if heuristic_type == HeuristicType.MANHATTAN_DISTANCE.value:
         heuristic = calculate_manhattan_distance
     elif heuristic_type == HeuristicType.AIRPLANE_DISTANCE.value:
         heuristic = calculate_airplane_distance
     else:
+        # Returns error code, if wrong heuristic_type argument was given
         return algorithm_map, 401, -1, [], 0.0, 0.0
 
-    # Initialize the priority queue
-    rows, cols = len(map), len(map[0])
+    # Initializes all the components needed for the A*-algorithm
     directions = [(-1, 0), (1, 0), (0, -1), (0, 1)]
-    priority_queue = []
-    heapq.heappush(priority_queue, (0, start_position, 0))
+    open_priority_queue = []
     previous_positions = {}
-    g_scores = {start_position: 0}
-    path_positions = []
     path_length = -1
 
-    # Mark the start position on the algorithm map
+    # Starts the A*-algorithm at the start position by setting its distance and adding it to the priority queue
     algorithm_map[start_position[0]][start_position[1]] = 0
+    heapq.heappush(open_priority_queue, (0, start_position[0], start_position[1], 0))
+    f_scores = {start_position: 0}
 
-    # Main loop for A*-algorithm
-    while priority_queue:
-        _, current_position, g_score = heapq.heappop(priority_queue)
-        if current_position == goal_position:
+    # Performs the A*-algorithm as long as there are still tiles in the open_priority_queue with unchecked neighbours
+    while open_priority_queue:
+        # Reads a position and saved distance to the start position (g_score) from the open_priority_queue based on the lowest estimated distance towards the goal position (f_score)
+        f_score, row_index, column_index, g_score = heapq.heappop(open_priority_queue)
+
+        print(f_score, row_index, column_index, g_score)
+
+        # If the read position is the goal position its distance is saved as the path_length and the algorithm stops
+        if (row_index, column_index) == goal_position:
             path_length = g_score
             break
 
-        for direction in directions:
-            neighbor = (current_position[0] + direction[0], current_position[1] + direction[1])
+        # For each of the four tiles next to the read position the g_score and f_score is saved
+        for row_direction, column_direction in directions:
+            current_row_index = row_index + row_direction
+            current_column_index = column_index + column_direction
 
-            if (
-                0 <= neighbor[0] < rows and
-                0 <= neighbor[1] < cols and
-                map[neighbor[0]][neighbor[1]] != 1
-            ):
-                tentative_g_score = g_score + 1
-                if tentative_g_score < g_scores.get(neighbor, float('inf')):
-                    g_scores[neighbor] = tentative_g_score
-                    f_score = tentative_g_score + heuristic(neighbor, goal_position)
-                    heapq.heappush(priority_queue, (f_score, neighbor, tentative_g_score))
-                    previous_positions[neighbor] = current_position
-                    algorithm_map[neighbor[0]][neighbor[1]] = tentative_g_score
+            # Prior to saving the g_score and f_score it is checked, if the tile is a valid neighbour
+            if is_valid_neighbour_tile(current_row_index, current_column_index, map):
+                # The g_score and f_score of the current position is calculated
+                current_g_score = g_score + 1
+                current_f_score = current_g_score + heuristic((current_row_index, current_column_index), goal_position)
 
-    # Reconstruct the path if a solution was found
-    if path_length != -1:
-        current = goal_position
-        while current != start_position:
-            path_positions.append(current)
-            current = previous_positions[current]
-        path_positions.append(start_position)
-        path_positions.reverse()
-    else:
+                # The current values only get added to the open_priority_queue if there was no f_score calculated for the position which is lower than the current_f_score
+                if current_f_score < f_scores.get((current_row_index, current_column_index), float('inf')):
+                    # The determined g_score which represents the distance is saved to the algorithm_map, the f_score gets added to f_scores, and all the values get added to the open_priority_queue
+                    algorithm_map[current_row_index][current_column_index] = current_g_score
+                    f_scores[current_row_index, current_column_index] = current_f_score
+                    heapq.heappush(open_priority_queue, (current_f_score, current_row_index, current_column_index, current_g_score))
+
+                    # Saves the previous position to each current position to determine the path towards the goal at a later step
+                    previous_positions[(current_row_index, current_column_index)] = (row_index, column_index)
+
+    # If no path towards the goal could be found, the corresponding status_code gets returned
+    if path_length == -1:
         status_code = 404
+    else:
+        # Reconstruct the A*-algorithms path
+        path_positions = reconstruct_path(start_position, goal_position, previous_positions)
 
-    # Measure memory and time usage
+    # The memory usage gets saved and the tracking is stopped
     _, peak = tracemalloc.get_traced_memory()
     tracemalloc.stop()
 
+    # The end_time gets saved and the computing_time in seconds is calculated by subtracting the start_time and rounding the result to two decimal places
     end_time = time.perf_counter()
     computing_time = end_time - start_time
+
+    # The memory usage gets converted to MB
     memory_usage = peak / 10**6
 
     return algorithm_map, status_code, path_length, path_positions, computing_time, memory_usage

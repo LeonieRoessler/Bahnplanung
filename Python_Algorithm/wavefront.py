@@ -4,6 +4,7 @@ import tracemalloc
 from collections import deque
 
 from read_from_csv import read_from_csv
+from reconstruct_path import reconstruct_path
 from write_to_json import write_to_json
 
 def is_valid_neighbour_tile(row_index, column_index, map, algorithm_map):
@@ -25,14 +26,15 @@ def is_valid_neighbour_tile(row_index, column_index, map, algorithm_map):
         and algorithm_map[row_index][column_index] == -1
     )
 
+
 def wavefront(map, algorithm_map, start_position, goal_position, status_code):
     """Apply the Wavefront Algorithm.
 
     Arguments:
         map (list[list[int]]): The map in form of a list of lists of integers.
         algorithm_map (list[list[int]]): The prepared map in form of a list of lists of integers that will be overwritten by the Wavefront-algorithm.
-        start_position (tuple(int, int)): The start position on the map for the Wavefront-algorithm.
-        goal_position (tuple(int, int)): The goal position on the map for the Wavefront-algorithm.
+        start_position (tuple[int, int]): The start position on the map for the Wavefront-algorithm.
+        goal_position (tuple[int, int]): The goal position on the map for the Wavefront-algorithm.
         status_code (int): The status code returned when reading the CSV-file.
 
     Returns:
@@ -47,26 +49,22 @@ def wavefront(map, algorithm_map, start_position, goal_position, status_code):
     if status_code != 200:
         return algorithm_map, status_code, -1, 0.0, 0.0
 
-    # Starts start_time gets saved and the observation of the memory usage is started
+    # Saves the start_time and the observation of the memory usage is started
     start_time = time.perf_counter()
     tracemalloc.start()
 
     # Initializes all the components needed for the Wavefront-algorithm
     directions = [(-1, 0), (1, 0), (0, -1), (0, 1)]
     position_queue = deque()
+    previous_positions = {}
+    path_length = -1
 
     # Starts the Wavefront-algorithm at the start position by setting the distance
     algorithm_map[start_position[0]][start_position[1]] = 0
     position_queue.append((start_position[0], start_position[1], 0))
-    previous_positions = {}
-
-    # Initializing the path_length and an empty path
-    path_length = -1
-    path_positions = []
 
     # Performs the Wavefront-algorithm as long as there are still tiles in the position_queue with unchecked neighbours
     while position_queue:
-
         # Reads a position and saved distance from the position_queue according to the First-In-First-Out principle
         row_index, column_index, distance = position_queue.popleft()
 
@@ -82,24 +80,19 @@ def wavefront(map, algorithm_map, start_position, goal_position, status_code):
 
             # Prior to saving the distance it is checked, if the tile is a valid neighbour
             if is_valid_neighbour_tile(current_row_index, current_column_index, map, algorithm_map):
-                    # The determined distance gets saved to the algorithm_map and the field gets added to the position_queue and visited_positions
+                    # The determined distance gets saved to the algorithm_map and the field gets added to the position_queue
                     algorithm_map[current_row_index][current_column_index] = distance + 1
                     position_queue.append((current_row_index, current_column_index, distance + 1))
 
-                    # Save the previous position to each current position to determine the path towards the goal at a later step
+                    # Saves the previous position to each current position to determine the path towards the goal at a later step
                     previous_positions[(current_row_index, current_column_index)] = (row_index, column_index)
 
     # If no path towards the goal could be found, the corresponding status_code gets returned
     if path_length == -1:
         status_code = 404
     else:
-        # Reconstruct the path reading the previous position of a position from the previous_positions
-        current_position = goal_position
-        while current_position != start_position:
-            path_positions.append(current_position)
-            current_position = previous_positions[current_position]
-        path_positions.append(start_position)
-        path_positions.reverse()
+        # Reconstruct the Wavefront-algorithms path
+        path_positions = reconstruct_path(start_position, goal_position, previous_positions)
 
     # The memory usage gets saved and the tracking is stopped
     _, peak = tracemalloc.get_traced_memory()

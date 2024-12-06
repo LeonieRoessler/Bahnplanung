@@ -9,8 +9,8 @@ def initialize_algorithm_map(map):
 
     Returns:
         list[list[int]]: The prepared map in form of a list of lists of integers for the path planning algorithm.
-        tuple(int, int): The start position on the map for the path planning algorithm.
-        tuple(int, int): The goal position on the map for the path planning algorithm.
+        tuple[int, int]: The start position on the map for the path planning algorithm.
+        tuple[int, int]: The goal position on the map for the path planning algorithm.
         int: A status code to represent success or a specific error type when initializing the algorithm map.
     """
     start_position = None
@@ -54,8 +54,8 @@ def read_from_csv(csv_path):
     Returns:
         list[list[int]]: The map in form of a list of lists of integers.
         list[list[int]]: The prepared map in form of a list of lists of integers that can be overwritten by the path planning algorithms to show how they work.
-        tuple(int, int): The start position on the map for the path planning algorithm.
-        tuple(int, int): The goal position on the map for the path planning algorithm.
+        tuple[int, int]: The start position on the map for the path planning algorithm.
+        tuple[int, int]: The goal position on the map for the path planning algorithm.
         int: A status code to represent success or a specific error type when reading the CSV-file.
     """
     try:
