@@ -108,14 +108,12 @@ def a_star(map, algorithm_map, start_position, goal_position, heuristic_type, st
     # Starts the A*-algorithm at the start position by setting its distance and adding it to the priority queue
     algorithm_map[start_position[0]][start_position[1]] = 0
     heapq.heappush(open_priority_queue, (0, start_position[0], start_position[1], 0))
-    f_scores = {start_position: 0}
+    g_scores = {start_position: 0}
 
     # Performs the A*-algorithm as long as there are still tiles in the open_priority_queue with unchecked neighbours
     while open_priority_queue:
         # Reads a position and saved distance to the start position (g_score) from the open_priority_queue based on the lowest estimated distance towards the goal position (f_score)
-        f_score, row_index, column_index, g_score = heapq.heappop(open_priority_queue)
-
-        print(f_score, row_index, column_index, g_score)
+        _, row_index, column_index, g_score = heapq.heappop(open_priority_queue)
 
         # If the read position is the goal position its distance is saved as the path_length and the algorithm stops
         if (row_index, column_index) == goal_position:
@@ -129,15 +127,17 @@ def a_star(map, algorithm_map, start_position, goal_position, heuristic_type, st
 
             # Prior to saving the g_score and f_score it is checked, if the tile is a valid neighbour
             if is_valid_neighbour_tile(current_row_index, current_column_index, map):
-                # The g_score and f_score of the current position is calculated
+                # The g_score of the current position is calculated
                 current_g_score = g_score + 1
-                current_f_score = current_g_score + heuristic((current_row_index, current_column_index), goal_position)
 
-                # The current values only get added to the open_priority_queue if there was no f_score calculated for the position which is lower than the current_f_score
-                if current_f_score < f_scores.get((current_row_index, current_column_index), float('inf')):
-                    # The determined g_score which represents the distance is saved to the algorithm_map, the f_score gets added to f_scores, and all the values get added to the open_priority_queue
+                # The current values only gets added to the open_priority_queue if there was no g_score calculated for the position which is lower than the current_g_score
+                if current_g_score < g_scores.get((current_row_index, current_column_index), float('inf')):
+                    # The f_score of the current position is calculated
+                    current_f_score = current_g_score + heuristic((current_row_index, current_column_index), goal_position)
+
+                    # The determined g_score which represents the distance is saved to the algorithm_map, added to g_scores, and all the values get added to the open_priority_queue
                     algorithm_map[current_row_index][current_column_index] = current_g_score
-                    f_scores[current_row_index, current_column_index] = current_f_score
+                    g_scores[current_row_index, current_column_index] = current_g_score
                     heapq.heappush(open_priority_queue, (current_f_score, current_row_index, current_column_index, current_g_score))
 
                     # Saves the previous position to each current position to determine the path towards the goal at a later step
