@@ -28,7 +28,7 @@ def is_valid_neighbour_tile(row_index, column_index, map, algorithm_map):
 
 
 def wavefront(map, algorithm_map, start_position, goal_position, status_code):
-    """Apply the Wavefront Algorithm.
+    """Apply the Wavefront-algorithm.
 
     Arguments:
         map (list[list[int]]): The map in form of a list of lists of integers.
@@ -47,7 +47,7 @@ def wavefront(map, algorithm_map, start_position, goal_position, status_code):
     """
     # Checks if an error was encountered prior to the Wavefront-algorithm
     if status_code != 200:
-        return algorithm_map, status_code, -1, 0.0, 0.0
+        return algorithm_map, status_code, -1, [], 0.0, 0.0
 
     # Saves the start_time and the observation of the memory usage is started
     start_time = time.perf_counter()
