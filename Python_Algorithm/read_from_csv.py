@@ -70,8 +70,8 @@ def read_from_csv(csv_path):
 
     # Returns corresponding error codes in case of errors
     except FileNotFoundError:
-        return [], [], 504
+        return [], [], None, None, 504
     except ValueError:
-        return [], [], 500
+        return [], [], None, None, 500
     except Exception:
-        return [], [], 509
+        return [], [], None, None, 509
