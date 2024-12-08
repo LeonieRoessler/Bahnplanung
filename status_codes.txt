@@ -1,0 +1,15 @@
+200er: Erfolgreiche Ausführung
+200 = Erfolg
+
+400er: Fehler beim Algorithmus/der Map
+401 = Bei A* falsche mathematische Funktion übergeben
+402 = kein Startpunkt
+403 = kein Zielpunkt
+404 = Zielpunkt nicht erreichbar
+422 = mehr als ein Startpunkt
+433 = mehr als ein Zielpunkt
+
+500er: Fehler beim Einlesen der CSV-Datei/Schreiben der JSON-Datei
+500 = Wertefehler beim Auslesen der CSV-Datei
+504 = CSV-File nicht gefunden (falscher Pfad)
+509 = andere Fehler beim Auslesen der CSV-Datei
