@@ -15,29 +15,6 @@ public class AlgorithmResult {
         this.memoryUsage = memoryUsage;
     }
 
-    public String algorithmMapToString() {
-        String indent = "   ";
-        StringBuilder formattedAlgorithmMap = new StringBuilder();
-        formattedAlgorithmMap.append("[\n");
-        for (int row_index = 0; row_index < algorithmMap.length; row_index++) {
-            formattedAlgorithmMap.append(indent).append("[\n");
-            for (int column_index = 0; column_index < algorithmMap.length; column_index++) {
-                formattedAlgorithmMap.append(indent).append(indent).append(algorithmMap[row_index][column_index]);
-                if (column_index < algorithmMap[row_index].length - 1) {
-                    formattedAlgorithmMap.append(",");
-                }
-                formattedAlgorithmMap.append("\n");
-            }
-            formattedAlgorithmMap.append(indent).append("]");
-            if (row_index < algorithmMap.length - 1) {
-                formattedAlgorithmMap.append(",");
-            }
-            formattedAlgorithmMap.append("\n");
-        }
-        formattedAlgorithmMap.append("]");
-        return formattedAlgorithmMap.toString();
-    }
-
     public int[][] getAlgorithmMap() {
         return algorithmMap;
     }
