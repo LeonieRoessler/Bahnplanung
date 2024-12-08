@@ -1,9 +1,9 @@
 import java.io.FileWriter;
 import java.io.IOException;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.LinkedHashMap;
-import java.util.Map;
+import java.io.Writer;
+
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 
 /**
 * JSONWriter is the class that writes the results of a path planning algorithm to a JSON-file
@@ -33,39 +33,13 @@ public class JSONWriter {
      * Writes the results of a path planning algorithm to a JSON-file
      */
     public void writeToJSON() {
-        Map<String, Object> data = new LinkedHashMap<>();
-        data.put("algorithm_map", algorithmResult.getAlgorithmMap());
-        data.put("status_code", algorithmResult.getStatusCode());
-        data.put("path_length", algorithmResult.getPathLength());
-        data.put("path", algorithmResult.getPathPositions());
-        data.put("computing_time", algorithmResult.getComputingTime());
-        data.put("memory_usage", algorithmResult.getMemoryUsage());
-
-        String indent = "   ";
-        StringBuilder json = new StringBuilder();
-        json.append("{\n");
-
-        int i = 0;
-        for (Map.Entry<String, Object> entry : data.entrySet()) {
-            json.append(indent).append("\"").append(entry.getKey()).append("\": ");
-
-            if (entry.getValue() instanceof String) {
-                json.append("\"").append(entry.getValue()).append("\"");
-            } else {
-                json.append(entry.getValue());
-            }
-
-            if (i < data.size() - 1) {
-                json.append(",\n");
-            }
-            i++;
-        }
-
-        json.append("\n}");
-        String jsonObject = json.toString();
-
-        try (FileWriter file = new FileWriter(jsonPath)) {
-            file.write(jsonObject);
+        try {
+            System.out.println("JSON");
+            Writer writer = new FileWriter(jsonPath);
+            Gson gson = new GsonBuilder().setPrettyPrinting().create();
+            gson.toJson(algorithmResult, writer);
+            writer.flush();
+            writer.close();
         } catch (IOException e) {
             e.printStackTrace();
         }
