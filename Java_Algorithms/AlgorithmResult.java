@@ -1,9 +1,22 @@
+import com.google.gson.annotations.SerializedName;
+
 public class AlgorithmResult {
+    @SerializedName("algorithm_map")
     private int[][] algorithmMap;
+
+    @SerializedName("status_code")
     private int statusCode;
+
+    @SerializedName("path_length")
     private int pathLength;
+
+    @SerializedName("path")
     private int[][] pathPositions;
+
+    @SerializedName("computing_time")
     private float computingTime;
+
+    @SerializedName("memory_usage")
     private float memoryUsage;
 
     public AlgorithmResult(int[][] algorithmMap, int statusCode, int pathLength, int[][] pathPositions, float computingTime, float memoryUsage) {

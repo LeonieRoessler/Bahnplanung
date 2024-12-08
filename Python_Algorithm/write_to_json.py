@@ -24,7 +24,7 @@ def write_to_json(json_path, algorithm_map, status_code, path_length, path, comp
     }
 
     # Writes json_dictionary to JSON-file
-    json_object = json.dumps(json_dictionary, indent=4)
+    json_object = json.dumps(json_dictionary, indent=2)
 
     with open(json_path, "w") as json_file:
         json_file.write(json_object)
