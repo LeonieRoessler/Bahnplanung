@@ -9,6 +9,7 @@ def write_to_json(json_path, algorithm_map, status_code, path_length, path, comp
         algorithm_map (list[list[int]]): The map created by the path planning algorithm filled with the values determined by the algorithm.
         status_code (int): The status code returned by the path planning algorithm symbolizing success or a specific error type.
         path_length (int): The shortest path length determined by the algorithm in the form of tiles towards the goal.
+        path (list[tuple[int, int]]): The positions of the path from start to goal.
         computing_time (float): The time the algorithm needed to finish in seconds.
         memory_usage (float): The used memory in MB.
     """
