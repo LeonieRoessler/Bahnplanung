@@ -1,3 +1,6 @@
+import java.util.HashMap;
+import java.util.Map;
+
 public class Wavefront {
 
     private static final int[][] DIRECTIONS = {
@@ -32,7 +35,31 @@ public class Wavefront {
     }
 
     private void applyWavefront() {
+        // Calls Garbage Collector to clean memory
+        System.gc();
+
+        // Saves the startTime and starts the observation of the memory usage
+        long startTime = System.nanoTime();
+        long memoryBefore = Runtime.getRuntime().totalMemory() - Runtime.getRuntime().freeMemory();
+
+        HashMap<String, String> test = new HashMap<>();
+        test.put(goalRowIndex + "," + goalColumnIndex, startRowIndex + "," + startColumnIndex);
         System.out.println("test");
+        PathReconstructor pathReconstructor = new PathReconstructor(startRowIndex, startColumnIndex, goalRowIndex, goalColumnIndex, test);
+        int[][] path = pathReconstructor.reconstructPath();
+
+        // The tracking of the memory usage is stopped
+        long memoryAfter = Runtime.getRuntime().totalMemory() - Runtime.getRuntime().freeMemory();
+
+        // The endTime gets saved and the computingTime in seconds is calculated by subtracting the startTime
+        long endTime = System.nanoTime();
+        double computingTime = (double)(endTime - startTime)/1_000_000_000.0;
+
+        // The memory usage gets converted to MB
+        double memoryUsage = (double)(memoryBefore - memoryAfter) / 1_048_576.0;
+
+        System.out.println(computingTime);
+        System.out.println(memoryUsage);
         //return new AlgorithmResult(algorithmMap, goalColumnIndex, goalColumnIndex, algorithmMap, goalColumnIndex, goalColumnIndex);
     }
 }

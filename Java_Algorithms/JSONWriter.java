@@ -34,7 +34,7 @@ public class JSONWriter {
      */
     public void writeToJSON() {
         try {
-            System.out.println("JSON");
+            // Transforms AlgorithmResult to JSON-object and writes it to a JSON-file under the jsonPath
             Writer writer = new FileWriter(jsonPath);
             Gson gson = new GsonBuilder().setPrettyPrinting().create();
             gson.toJson(algorithmResult, writer);

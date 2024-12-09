@@ -1,25 +1,55 @@
 import com.google.gson.annotations.SerializedName;
 
+/**
+ * AlgorithmResult is the class that represents the result after applying a path planning algorithm
+ */
 public class AlgorithmResult {
+    /**
+     * The map created by the path planning algorithm filled with the values determined by the algorithm
+     */
     @SerializedName("algorithm_map")
     private int[][] algorithmMap;
 
+    /**
+     * The status code returned by the path planning algorithm symbolizing success or a specific error type
+     */
     @SerializedName("status_code")
     private int statusCode;
 
+    /**
+     * The shortest path length determined by the algorithm in the form of tiles towards the goal
+     */
     @SerializedName("path_length")
     private int pathLength;
 
+    /**
+     * The positions of the path from start to goal
+     */
     @SerializedName("path")
     private int[][] pathPositions;
 
+    /**
+     * The time the algorithm needed to finish in seconds
+     */
     @SerializedName("computing_time")
-    private float computingTime;
+    private double computingTime;
 
+    /**
+     * The used memory in MB
+     */
     @SerializedName("memory_usage")
-    private float memoryUsage;
+    private double memoryUsage;
 
-    public AlgorithmResult(int[][] algorithmMap, int statusCode, int pathLength, int[][] pathPositions, float computingTime, float memoryUsage) {
+    /**
+     * Constructor of the AlgorithmResult class
+     * @param algorithmMap The map created by the path planning algorithm filled with the values determined by the algorithm
+     * @param statusCode The status code returned by the path planning algorithm symbolizing success or a specific error type
+     * @param pathLength The shortest path length determined by the algorithm in the form of tiles towards the goal
+     * @param pathPositions The positions of the path from start to goal
+     * @param computingTime The time the algorithm needed to finish in seconds
+     * @param memoryUsage The used memory in MB
+     */
+    public AlgorithmResult(int[][] algorithmMap, int statusCode, int pathLength, int[][] pathPositions, double computingTime, double memoryUsage) {
         this.algorithmMap = algorithmMap;
         this.statusCode = statusCode;
         this.pathLength = pathLength;
@@ -60,19 +90,19 @@ public class AlgorithmResult {
         this.pathPositions = pathPositions;
     }
 
-    public float getComputingTime() {
+    public double getComputingTime() {
         return computingTime;
     }
 
-    public void setComputingTime(float computingTime) {
+    public void setComputingTime(double computingTime) {
         this.computingTime = computingTime;
     }
 
-    public float getMemoryUsage() {
+    public double getMemoryUsage() {
         return memoryUsage;
     }
 
-    public void setMemoryUsage(float memoryUsage) {
+    public void setMemoryUsage(double memoryUsage) {
         this.memoryUsage = memoryUsage;
     }
 }

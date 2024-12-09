@@ -98,7 +98,7 @@ def wavefront(map, algorithm_map, start_position, goal_position, status_code):
     _, peak = tracemalloc.get_traced_memory()
     tracemalloc.stop()
 
-    # The end_time gets saved and the computing_time in seconds is calculated by subtracting the start_time and rounding the result to two decimal places
+    # The end_time gets saved and the computing_time in seconds is calculated by subtracting the start_time
     end_time = time.perf_counter()
     computing_time = end_time - start_time
 

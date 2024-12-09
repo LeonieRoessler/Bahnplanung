@@ -101,70 +101,6 @@ public class CSVReader {
         }
     }
 
-    public String getCsvPath() {
-        return csvPath;
-    }
-
-    public void setCsvPath(String csvPath) {
-        this.csvPath = csvPath;
-    }
-
-    public int[][] getMap() {
-        return map;
-    }
-
-    public void setMap(int[][] map) {
-        this.map = map;
-    }
-
-    public int[][] getAlgorithmMap() {
-        return algorithmMap;
-    }
-
-    public void setAlgorithmMap(int[][] algorithmMap) {
-        this.algorithmMap = algorithmMap;
-    }
-
-    public int getStartRowIndex() {
-        return startRowIndex;
-    }
-
-    public void setStartRowIndex(int startRowIndex) {
-        this.startRowIndex = startRowIndex;
-    }
-
-    public int getStartColumnIndex() {
-        return startColumnIndex;
-    }
-
-    public void setStartColumnIndex(int startColumnIndex) {
-        this.startColumnIndex = startColumnIndex;
-    }
-
-    public int getGoalRowIndex() {
-        return goalRowIndex;
-    }
-
-    public void setGoalRowIndex(int goalRowIndex) {
-        this.goalRowIndex = goalRowIndex;
-    }
-
-    public int getGoalColumnIndex() {
-        return goalColumnIndex;
-    }
-
-    public void setGoalColumnIndex(int goalColumnIndex) {
-        this.goalColumnIndex = goalColumnIndex;
-    }
-
-    public int getStatusCode() {
-        return statusCode;
-    }
-
-    public void setStatusCode(int statusCode) {
-        this.statusCode = statusCode;
-    }
-
     /**
      * Initializes a map for a path planning algorithm and searches for start and end positions
      */
@@ -231,5 +167,69 @@ public class CSVReader {
             statusCode = 403;
             return;
         }
+    }
+
+    public String getCsvPath() {
+        return csvPath;
+    }
+
+    public void setCsvPath(String csvPath) {
+        this.csvPath = csvPath;
+    }
+
+    public int[][] getMap() {
+        return map;
+    }
+
+    public void setMap(int[][] map) {
+        this.map = map;
+    }
+
+    public int[][] getAlgorithmMap() {
+        return algorithmMap;
+    }
+
+    public void setAlgorithmMap(int[][] algorithmMap) {
+        this.algorithmMap = algorithmMap;
+    }
+
+    public int getStartRowIndex() {
+        return startRowIndex;
+    }
+
+    public void setStartRowIndex(int startRowIndex) {
+        this.startRowIndex = startRowIndex;
+    }
+
+    public int getStartColumnIndex() {
+        return startColumnIndex;
+    }
+
+    public void setStartColumnIndex(int startColumnIndex) {
+        this.startColumnIndex = startColumnIndex;
+    }
+
+    public int getGoalRowIndex() {
+        return goalRowIndex;
+    }
+
+    public void setGoalRowIndex(int goalRowIndex) {
+        this.goalRowIndex = goalRowIndex;
+    }
+
+    public int getGoalColumnIndex() {
+        return goalColumnIndex;
+    }
+
+    public void setGoalColumnIndex(int goalColumnIndex) {
+        this.goalColumnIndex = goalColumnIndex;
+    }
+
+    public int getStatusCode() {
+        return statusCode;
+    }
+
+    public void setStatusCode(int statusCode) {
+        this.statusCode = statusCode;
     }
 }
