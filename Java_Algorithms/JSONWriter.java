@@ -12,12 +12,12 @@ public class JSONWriter {
     /**
      * The path to the destination of the JSON-File including its name
      */
-    private String jsonPath;
+    private final String jsonPath;
 
     /**
      * The results of the path planning algorithm in form of an AlgorithmResult
      */
-    private AlgorithmResult algorithmResult;
+    private final AlgorithmResult algorithmResult;
 
     /**
      * Constructor of the JSONWriter class
@@ -45,19 +45,4 @@ public class JSONWriter {
         }
     }
 
-    public String getJsonPath() {
-        return jsonPath;
-    }
-
-    public void setJsonPath(String jsonPath) {
-        this.jsonPath = jsonPath;
-    }
-
-    public AlgorithmResult getAlgorithmResult() {
-        return algorithmResult;
-    }
-
-    public void setAlgorithmResult(AlgorithmResult algorithmResult) {
-        this.algorithmResult = algorithmResult;
-    }
 }

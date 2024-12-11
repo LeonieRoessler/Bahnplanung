@@ -104,6 +104,7 @@ def a_star(map, algorithm_map, start_position, goal_position, heuristic_type, st
     open_priority_queue = []
     previous_positions = {}
     path_length = -1
+    path_positions = []
 
     # Starts the A*-algorithm at the start position by setting its distance and adding it to the priority queue
     algorithm_map[start_position[0]][start_position[1]] = 0
@@ -165,6 +166,12 @@ def a_star(map, algorithm_map, start_position, goal_position, heuristic_type, st
 
 
 if __name__ == "__main__":
+    """The main function of the A*-algorithm.
+
+    Arguments:
+        csv_path (string): The path towards the CSV-file with the map the A*-algorithm is supposed to be applied to.
+        json_path (string): The path towards the JSON-file where the results of the A*-algorithm are saved.
+    """
     parser = argparse.ArgumentParser(description="A*-Algorithmus auf Basis einer Map in einer CSV-Datei und Ausgabe in einer JSON-Datei")
     parser.add_argument("csv_path", help="Pfad zur Eingabe-CSV-Datei")
     parser.add_argument("json_path", help="Pfad zur Ausgabe-JSON-Datei")
@@ -175,7 +182,7 @@ if __name__ == "__main__":
     )
     args = parser.parse_args()
 
-    # Load map and apply A* algorithm
+    # Reads in the map, applies the A*-algorithm to it and saves the results to a JSON-file
     map, algorithm_map, start_position, goal_position, status_code = read_from_csv(args.csv_path)
     algorithm_map, status_code, path_length, path_positions, computing_time, memory_usage = a_star(map, algorithm_map, start_position, goal_position, args.heuristic_type, status_code)
     write_to_json(args.json_path, algorithm_map, status_code, path_length, path_positions, computing_time, memory_usage)

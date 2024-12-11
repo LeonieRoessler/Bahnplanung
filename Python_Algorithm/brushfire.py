@@ -97,7 +97,7 @@ if __name__ == "__main__":
 
     Arguments:
         csv_path (string): The path towards the CSV-file with the map the Brushfire-algorithm is supposed to be applied to.
-        json_path (string): The path towards the JSON-file where the results of the Brushfire-algorithm are ssaved.
+        json_path (string): The path towards the JSON-file where the results of the Brushfire-algorithm are saved.
     """
     parser = argparse.ArgumentParser(description="Brushfire-Algorithmus auf Basis einer Map in einer CSV-Datei und Ausgabe in einer JSON-Datei")
     parser.add_argument("csv_path", help="Pfad zur Eingabe-CSV-Datei")

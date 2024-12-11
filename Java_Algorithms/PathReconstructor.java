@@ -1,4 +1,7 @@
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
 
 /**
  * PathReconstructor is the class that reconstructs a path from the results of a path planning algorithm
@@ -7,27 +10,27 @@ public class PathReconstructor {
     /**
      * The row index of the start position
      */
-    private int startRowIndex;
+    private final int startRowIndex;
 
     /**
      * The column index of the start position
      */
-    private int startColumnIndex;
+    private final int startColumnIndex;
 
     /**
      * The row index of the goal position
      */
-    private int goalRowIndex;
+    private final int goalRowIndex;
 
     /**
      * The column index of the goal position
      */
-    private int goalColumnIndex;
+    private final int goalColumnIndex;
 
     /**
      * A set that includes the previous position for every visit
      */
-    private HashMap<String, String> previousPositions;
+    private final HashMap<String, String> previousPositions;
 
     /**
      * Constructor of the PathReconstructor class
@@ -47,6 +50,7 @@ public class PathReconstructor {
 
     /**
      * Reconstructs the path of a path planning algorithm starting from the goal and looping through the previous positions
+     * @return The list of path positions from start to goal
      */
     public int[][] reconstructPath() {
         // Initializes empty pathPositions and currentPosition
@@ -56,7 +60,7 @@ public class PathReconstructor {
         int currentColumnIndex = goalColumnIndex;
 
         // Loops through previousPositions until the start position is found
-        while ((currentRowIndex != startRowIndex) && (currentColumnIndex != startColumnIndex)) {
+        while (!(currentRowIndex == startRowIndex && currentColumnIndex == startColumnIndex)) {
             pathPositions.add(new int[]{currentRowIndex, currentColumnIndex});
             currentPosition = previousPositions.get(currentPosition);
 
@@ -79,43 +83,4 @@ public class PathReconstructor {
         return pathArray;
     }
 
-    public int getStartRowIndex() {
-        return startRowIndex;
-    }
-
-    public void setStartRowIndex(int startRowIndex) {
-        this.startRowIndex = startRowIndex;
-    }
-
-    public int getStartColumnIndex() {
-        return startColumnIndex;
-    }
-
-    public void setStartColumnIndex(int startColumnIndex) {
-        this.startColumnIndex = startColumnIndex;
-    }
-
-    public int getGoalRowIndex() {
-        return goalRowIndex;
-    }
-
-    public void setGoalRowIndex(int goalRowIndex) {
-        this.goalRowIndex = goalRowIndex;
-    }
-
-    public int getGoalColumnIndex() {
-        return goalColumnIndex;
-    }
-
-    public void setGoalColumnIndex(int goalColumnIndex) {
-        this.goalColumnIndex = goalColumnIndex;
-    }
-
-    public HashMap<String, String> getPreviousPositions() {
-        return previousPositions;
-    }
-
-    public void setPreviousPositions(HashMap<String, String> previousPositions) {
-        this.previousPositions = previousPositions;
-    }
 }

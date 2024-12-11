@@ -5,37 +5,37 @@ public class CSVReaderResult {
     /**
      * The map from the CSV-file
      */
-    private int[][] map;
+    private final int[][] map;
 
     /**
      * The initialized map for the path planning algorithm
      */
-    private int[][] algorithmMap;
+    private final int[][] algorithmMap;
 
     /**
      * The row index of the start position
      */
-    private int startRowIndex;
+    private final int startRowIndex;
 
     /**
      * The column index of the start position
      */
-    private int startColumnIndex;
+    private final int startColumnIndex;
 
     /**
      * The row index of the goal position
      */
-    private int goalRowIndex;
+    private final int goalRowIndex;
 
     /**
      * The column index of the goal position
      */
-    private int goalColumnIndex;
+    private final int goalColumnIndex;
 
     /**
      * The status code after reading from the CSV-file
      */
-    private int statusCode;
+    private final int statusCode;
 
     /**
      * Constructor of the CSVReaderResult class
@@ -57,59 +57,60 @@ public class CSVReaderResult {
         this.statusCode = statusCode;
     }
 
+    /**
+     * Returns the map
+     * @return The map from the CSV-file
+     */
     public int[][] getMap() {
         return map;
     }
 
-    public void setMap(int[][] map) {
-        this.map = map;
-    }
-
+    /**
+     * Returns the algorithmMap
+     * @return The initialized map for the path planning algorithm
+     */
     public int[][] getAlgorithmMap() {
         return algorithmMap;
     }
 
-    public void setAlgorithmMap(int[][] algorithmMap) {
-        this.algorithmMap = algorithmMap;
-    }
-
+    /**
+     * Returns the startRowIndex
+     * @return The row index of the start position
+     */
     public int getStartRowIndex() {
         return startRowIndex;
     }
 
-    public void setStartRowIndex(int startRowIndex) {
-        this.startRowIndex = startRowIndex;
-    }
-
+    /**
+     * Returns the startColumnIndex
+     * @return The column index of the start position
+     */
     public int getStartColumnIndex() {
         return startColumnIndex;
     }
 
-    public void setStartColumnIndex(int startColumnIndex) {
-        this.startColumnIndex = startColumnIndex;
-    }
-
+    /**
+     * Returns the goalRowIndex
+     * @return The row index of the goal position
+     */
     public int getGoalRowIndex() {
         return goalRowIndex;
     }
 
-    public void setGoalRowIndex(int goalRowIndex) {
-        this.goalRowIndex = goalRowIndex;
-    }
-
+    /**
+     * Returns the goalColumnIndex
+     * @return The column index of the goal position
+     */
     public int getGoalColumnIndex() {
         return goalColumnIndex;
     }
 
-    public void setGoalColumnIndex(int goalColumnIndex) {
-        this.goalColumnIndex = goalColumnIndex;
-    }
-
+    /**
+     * Returns the statusCode
+     * @return The status code after reading from the CSV-file
+     */
     public int getStatusCode() {
         return statusCode;
     }
 
-    public void setStatusCode(int statusCode) {
-        this.statusCode = statusCode;
-    }
 }

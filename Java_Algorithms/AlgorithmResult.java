@@ -8,37 +8,37 @@ public class AlgorithmResult {
      * The map created by the path planning algorithm filled with the values determined by the algorithm
      */
     @SerializedName("algorithm_map")
-    private int[][] algorithmMap;
+    private final int[][] algorithmMap;
 
     /**
      * The status code returned by the path planning algorithm symbolizing success or a specific error type
      */
     @SerializedName("status_code")
-    private int statusCode;
+    private final int statusCode;
 
     /**
      * The shortest path length determined by the algorithm in the form of tiles towards the goal
      */
     @SerializedName("path_length")
-    private int pathLength;
+    private final int pathLength;
 
     /**
      * The positions of the path from start to goal
      */
     @SerializedName("path")
-    private int[][] pathPositions;
+    private final int[][] pathPositions;
 
     /**
      * The time the algorithm needed to finish in seconds
      */
     @SerializedName("computing_time")
-    private double computingTime;
+    private final double computingTime;
 
     /**
      * The used memory in MB
      */
     @SerializedName("memory_usage")
-    private double memoryUsage;
+    private final double memoryUsage;
 
     /**
      * Constructor of the AlgorithmResult class
@@ -58,51 +58,4 @@ public class AlgorithmResult {
         this.memoryUsage = memoryUsage;
     }
 
-    public int[][] getAlgorithmMap() {
-        return algorithmMap;
-    }
-
-    public void setAlgorithmMap(int[][] algorithmMap) {
-        this.algorithmMap = algorithmMap;
-    }
-
-    public int getStatusCode() {
-        return statusCode;
-    }
-
-    public void setStatusCode(int statusCode) {
-        this.statusCode = statusCode;
-    }
-
-    public int getPathLength() {
-        return pathLength;
-    }
-
-    public void setPathLength(int pathLength) {
-        this.pathLength = pathLength;
-    }
-
-    public int[][] getPathPositions() {
-        return pathPositions;
-    }
-
-    public void setPathPositions(int[][] pathPositions) {
-        this.pathPositions = pathPositions;
-    }
-
-    public double getComputingTime() {
-        return computingTime;
-    }
-
-    public void setComputingTime(double computingTime) {
-        this.computingTime = computingTime;
-    }
-
-    public double getMemoryUsage() {
-        return memoryUsage;
-    }
-
-    public void setMemoryUsage(double memoryUsage) {
-        this.memoryUsage = memoryUsage;
-    }
 }

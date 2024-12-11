@@ -58,6 +58,7 @@ def wavefront(map, algorithm_map, start_position, goal_position, status_code):
     position_queue = deque()
     previous_positions = {}
     path_length = -1
+    path_positions = []
 
     # Starts the Wavefront-algorithm at the start position by setting the distance
     algorithm_map[start_position[0]][start_position[1]] = 0
@@ -113,7 +114,7 @@ if __name__ == "__main__":
 
     Arguments:
         csv_path (string): The path towards the CSV-file with the map the Wavefront-algorithm is supposed to be applied to.
-        json_path (string): The path towards the JSON-file where the results of the Wavefront-algorithm are ssaved.
+        json_path (string): The path towards the JSON-file where the results of the Wavefront-algorithm are saved.
     """
     parser = argparse.ArgumentParser(description="Wavefront-Algorithmus auf Basis einer Map in einer CSV-Datei und Ausgabe in einer JSON-Datei")
     parser.add_argument("csv_path", help="Pfad zur Eingabe-CSV-Datei")
