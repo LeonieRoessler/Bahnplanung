@@ -65,7 +65,7 @@ def brushfire(map, algorithm_map, status_code):
     # Performs the Brushfire-algorithm as long as there are still tiles in the position_queue with unchecked neighbours
     while position_queue:
         # Reads a position and saved distance from the position_queue according to the First-In-First-Out principle
-        row_index, column_index, current_distance = position_queue.popleft()
+        row_index, column_index, distance = position_queue.popleft()
 
         # For each of the four tiles next to the read position the distance towards an obstacle is saved
         for row_direction, column_direction in directions:
@@ -75,8 +75,8 @@ def brushfire(map, algorithm_map, status_code):
             # Prior to saving the distance it is checked, if the tile is a valid neighbour
             if is_valid_neighbour_tile(current_row_index, current_column_index, map, algorithm_map):
                 # The determined distance gets saved to the algorithm_map and the field gets added to the position_queue
-                algorithm_map[current_row_index][current_column_index] = current_distance + 1
-                position_queue.append((current_row_index, current_column_index, current_distance + 1))
+                algorithm_map[current_row_index][current_column_index] = distance + 1
+                position_queue.append((current_row_index, current_column_index, distance + 1))
 
     # The memory usage gets saved and the tracking is stopped
     _, peak = tracemalloc.get_traced_memory()

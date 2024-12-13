@@ -1,16 +1,18 @@
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.ArrayDeque;
 import java.util.Deque;
 import java.util.HashMap;
 
 /**
- * Wavefront is the class that applies the Wavefront-algorithm
+ * Brushfire is the class that applies the Brushfire-algorithm
  */
-public class Wavefront {
+public class Brushfire {
     /**
      * The four directions to neighbour tiles
      */
     private static final int[][] DIRECTIONS = {
-        {-1, 0}, {1, 0}, {0, -1}, {0, 1}
+            {-1, 0}, {1, 0}, {0, -1}, {0, 1}
     };
 
     /**
@@ -19,27 +21,27 @@ public class Wavefront {
     private final int[][] map;
 
     /**
-     * The prepared map in form of a multidimensional array that will be overwritten by the Wavefront-algorithm
+     * The prepared map in form of a multidimensional array that will be overwritten by the Brushfire-algorithm
      */
     private final int[][] algorithmMap;
 
     /**
-     * The start position row index on the map for the Wavefront-algorithm
+     * The start position row index on the map for the Brushfire-algorithm
      */
     private final int startRowIndex;
 
     /**
-     * The start position column index on the map for the Wavefront-algorithm
+     * The start position column index on the map for the Brushfire-algorithm
      */
     private final int startColumnIndex;
 
     /**
-     * The goal position row index on the map for the Wavefront-algorithm
+     * The goal position row index on the map for the Brushfire-algorithm
      */
     private final int goalRowIndex;
 
     /**
-     * The goal position column index on the map for the Wavefront-algorithm
+     * The goal position column index on the map for the Brushfire-algorithm
      */
     private final int goalColumnIndex;
 
@@ -49,16 +51,16 @@ public class Wavefront {
     private int statusCode;
 
     /**
-     * Constructor of the Wavefront class
+     * Constructor of the Brushfire class
      * @param map The map in form of a multidimensional array
-     * @param algorithmMap The prepared map in form of a multidimensional array that will be overwritten by the Wavefront-algorithm
-     * @param startRowIndex The start position row index on the map for the Wavefront-algorithm
-     * @param startColumnIndex The start position column index on the map for the Wavefront-algorithm
-     * @param goalRowIndex The goal position row index on the map for the Wavefront-algorithm
-     * @param goalColumnIndex The goal position column index on the map for the Wavefront-algorithm
+     * @param algorithmMap The prepared map in form of a multidimensional array that will be overwritten by the Brushfire-algorithm
+     * @param startRowIndex The start position row index on the map for the Brushfire-algorithm
+     * @param startColumnIndex The start position column index on the map for the Brushfire-algorithm
+     * @param goalRowIndex The goal position row index on the map for the Brushfire-algorithm
+     * @param goalColumnIndex The goal position column index on the map for the Brushfire-algorithm
      * @param statusCode The status code returned when reading the CSV-file
      */
-    public Wavefront (int[][] map, int[][] algorithmMap, int startRowIndex, int startColumnIndex, int goalRowIndex, int goalColumnIndex, int statusCode) {
+    public Brushfire (int[][] map, int[][] algorithmMap, int startRowIndex, int startColumnIndex, int goalRowIndex, int goalColumnIndex, int statusCode) {
         this.map = map;
         this.algorithmMap = algorithmMap;
         this.startRowIndex = startRowIndex;
@@ -77,18 +79,17 @@ public class Wavefront {
     private boolean isValidNeighbourTile(int rowIndex, int columnIndex) {
         return (
                 (0 <= rowIndex && rowIndex < map.length) &&
-                (0 <= columnIndex && columnIndex < map.length) &&
-                (map[rowIndex][columnIndex] != 1) &&
-                (algorithmMap[rowIndex][columnIndex] == -1)
+                        (0 <= columnIndex && columnIndex < map.length) &&
+                        (algorithmMap[rowIndex][columnIndex] == -1)
         );
     }
 
     /**
-     * The actual Wavefront-algorithm
+     * The actual Brushfire-algorithm
      * @return The results of the algorithm in form of an AlgorithmResult
      */
-    public AlgorithmResult applyWavefront() {
-        // Checks if an error was encountered prior to the Wavefront-algorithm
+    public AlgorithmResult applyBrushfire() {
+        // Checks if an error was encountered prior to the Brushfire-algorithm
         if (statusCode != 200) {
             return new AlgorithmResult(algorithmMap, statusCode, -1, new int[][]{}, 0, 0);
         }
@@ -100,17 +101,25 @@ public class Wavefront {
         long startTime = System.nanoTime();
         long memoryBefore = Runtime.getRuntime().totalMemory() - Runtime.getRuntime().freeMemory();
 
-        // Initializes all the components needed for the Wavefront-algorithm
+        System.out.println(Runtime.getRuntime().totalMemory());
+        System.out.println(Runtime.getRuntime().freeMemory());
+
+        // Initializes all the components needed for the Brushfire-algorithm
         Deque<int[]> positionQueue = new ArrayDeque<>();
-        HashMap<String, String> previousPositions = new HashMap<>();
         int pathLength = -1;
         int[][] pathPositions = new int[][]{};
 
-        // Starts the Wavefront-algorithm at the start position by setting the distance
-        algorithmMap[startRowIndex][startColumnIndex] = 0;
-        positionQueue.addLast(new int[]{startRowIndex, startColumnIndex, 0});
+        // Initialize distances for obstacles
+        for (int rowIndex = 0; rowIndex < map.length; rowIndex++) {
+            for (int columnIndex = 0; columnIndex < map[rowIndex].length; columnIndex++) {
+                if (map[rowIndex][columnIndex] == 1) {
+                    algorithmMap[rowIndex][columnIndex] = 0;
+                    positionQueue.addLast(new int[]{rowIndex, columnIndex, 0});
+                }
+            }
+        }
 
-        // Performs the Wavefront-algorithm as long as there are still tiles in the positionQueue with unchecked neighbours
+        // Performs the Brushfire-algorithm as long as there are still tiles in the positionQueue with unchecked neighbours
         while (!positionQueue.isEmpty()) {
             // Reads a position and saved distance from the position_queue according to the First-In-First-Out principle
             int[] position = positionQueue.removeFirst();
@@ -118,13 +127,7 @@ public class Wavefront {
             int columnIndex = position[1];
             int distance = position[2];
 
-            // If the read position is the goal position its distance is saved as the pathLength and the algorithm stops
-            if ((rowIndex == goalRowIndex) && (columnIndex == goalColumnIndex)) {
-                pathLength = distance;
-                break;
-            }
-
-            // For each of the four tiles next to the read position the distance is saved
+            // For each of the four tiles next to the read position the distance towards an obstacle is saved
             for (int[] direction : DIRECTIONS) {
                 int currentRowIndex = rowIndex + direction[0];
                 int currentColumnIndex = columnIndex + direction[1];
@@ -134,24 +137,15 @@ public class Wavefront {
                     // The determined distance gets saved to the algorithmMap and the field gets added to the positionQueue
                     algorithmMap[currentRowIndex][currentColumnIndex] = distance + 1;
                     positionQueue.addLast(new int[]{currentRowIndex, currentColumnIndex, distance + 1});
-
-                    // Saves the previous position to each current position to determine the path towards the goal at a later step
-                    previousPositions.put(currentRowIndex + "," + currentColumnIndex, rowIndex + "," + columnIndex);
                 }
             }
         }
 
-        // If no path towards the goal could be found, the corresponding status_code gets returned
-        if (pathLength == -1){
-            statusCode = 404;
-        } else {
-            // Reconstruct the Wavefront-algorithms path
-            PathReconstructor pathReconstructor = new PathReconstructor(startRowIndex, startColumnIndex, goalRowIndex, goalColumnIndex, previousPositions);
-            pathPositions = pathReconstructor.reconstructPath();
-        }
-
         // The tracking of the memory usage is stopped
         long memoryAfter = Runtime.getRuntime().totalMemory() - Runtime.getRuntime().freeMemory();
+
+        System.out.println(Runtime.getRuntime().totalMemory());
+        System.out.println(Runtime.getRuntime().freeMemory());
 
         // The endTime gets saved and the computingTime in seconds is calculated by subtracting the startTime
         long endTime = System.nanoTime();
@@ -160,6 +154,11 @@ public class Wavefront {
         // The memory usage gets converted to MB
         double memoryUsage = (double)(memoryAfter - memoryBefore) / 1_048_576.0;
 
-        return new AlgorithmResult(algorithmMap, statusCode, pathLength, pathPositions, computingTime, memoryUsage);
+        BigDecimal decimalComputingTime = new BigDecimal(computingTime).setScale(19, RoundingMode.HALF_UP);
+
+        System.out.println(memoryBefore);
+        System.out.println(memoryAfter);
+
+        return new AlgorithmResult(algorithmMap, statusCode, pathLength, pathPositions, decimalComputingTime, memoryUsage);
     }
 }
