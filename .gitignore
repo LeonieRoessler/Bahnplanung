@@ -399,3 +399,6 @@ FodyWeavers.xsd
 
 # Visual Studio Code cache/options directory
 .vscode/
+
+# IntelliJ Idea cache/options directory
+.idea/

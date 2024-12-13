@@ -49,7 +49,7 @@ public class Wavefront {
     private int statusCode;
 
     /**
-     * Constructor of the PathReconstructor class
+     * Constructor of the Wavefront class
      * @param map The map in form of a multidimensional array
      * @param algorithmMap The prepared map in form of a multidimensional array that will be overwritten by the Wavefront-algorithm
      * @param startRowIndex The start position row index on the map for the Wavefront-algorithm
@@ -118,7 +118,7 @@ public class Wavefront {
             int columnIndex = position[1];
             int distance = position[2];
 
-            // If the read position is the goal position its distance is saved as the path_length and the algorithm stops
+            // If the read position is the goal position its distance is saved as the pathLength and the algorithm stops
             if ((rowIndex == goalRowIndex) && (columnIndex == goalColumnIndex)) {
                 pathLength = distance;
                 break;

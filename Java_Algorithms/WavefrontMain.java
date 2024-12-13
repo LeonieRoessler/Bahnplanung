@@ -3,7 +3,7 @@
  */
 public class WavefrontMain {
     /**
-     * Constructor of the PathReconstructor class
+     * Constructor of the WavefrontMain class
      * @param args The arguments needed for starting the Wavefront-algorithm
      *             args[0] The path towards the CSV-file with the map the Wavefront-algorithm is supposed to be applied to
      *             args[1] The path towards the JSON-file where the results of the Wavefront-algorithm are saved
