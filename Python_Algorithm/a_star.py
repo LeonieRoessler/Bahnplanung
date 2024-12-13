@@ -135,7 +135,7 @@ def a_star(map, algorithm_map, start_position, goal_position, heuristic_type, st
                 if current_g_score < g_scores.get((current_row_index, current_column_index), float('inf')):
                     # The f_score of the current position is calculated
                     current_f_score = current_g_score + heuristic((current_row_index, current_column_index), goal_position)
-                    print(current_f_score)
+
                     # The determined g_score which represents the distance is saved to the algorithm_map, added to g_scores, and all the values get added to the open_priority_queue
                     algorithm_map[current_row_index][current_column_index] = current_g_score
                     g_scores[current_row_index, current_column_index] = current_g_score

@@ -158,7 +158,7 @@ public class Wavefront {
         double computingTime = (double)(endTime - startTime)/1_000_000_000.0;
 
         // The memory usage gets converted to MB
-        double memoryUsage = (double)(memoryBefore - memoryAfter) / 1_048_576.0;
+        double memoryUsage = (double)(memoryAfter - memoryBefore) / 1_048_576.0;
 
         return new AlgorithmResult(algorithmMap, statusCode, pathLength, pathPositions, computingTime, memoryUsage);
     }

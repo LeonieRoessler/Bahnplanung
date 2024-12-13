@@ -10,7 +10,6 @@ public class AStarMain {
      *             args[2] The heuristic function type to calculate the distance towards the goal position
      */
     public static void main(String[] args) {
-        AStarHeuristicType heuristicType;
         // Checks if the given heuristic type is valid and lets the user know if that is not the case
         if(!(args[2].equalsIgnoreCase(AStarHeuristicType.MANHATTAN_DISTANCE.getValue())|| args[2].equalsIgnoreCase(AStarHeuristicType.AIRPLANE_DISTANCE.getValue()))) {
             System.out.println("Invalid heuristicType. Valid options are: '"+ AStarHeuristicType.MANHATTAN_DISTANCE.getValue() + "', '" + AStarHeuristicType.AIRPLANE_DISTANCE.getValue() + "'");
@@ -23,7 +22,6 @@ public class AStarMain {
             AlgorithmResult algorithmResult = aStar.applyAStar();
             JSONWriter jsonWriter = new JSONWriter(args[1], algorithmResult);
             jsonWriter.writeToJSON();
-            System.out.println("Ende");
         }
     }
 }

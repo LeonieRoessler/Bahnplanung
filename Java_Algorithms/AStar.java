@@ -180,7 +180,7 @@ public class AStar {
                         if (currentGScore < gScores.getOrDefault(currentRowIndex + "," + currentColumnIndex, Integer.MAX_VALUE)) {
                             // The fScore of the current position is calculated
                             double currentFScore = currentGScore + heuristic.apply(currentRowIndex, currentColumnIndex);
-                            System.out.println(currentFScore);
+
                             // The determined gScore which represents the distance is saved to the algorithmMap, added to gScores, and all the values get added to the openPriorityQueue
                             algorithmMap[currentRowIndex][currentColumnIndex] = currentGScore;
                             gScores.put(currentRowIndex + "," + currentColumnIndex, currentGScore);
@@ -211,7 +211,7 @@ public class AStar {
             double computingTime = (double)(endTime - startTime)/1_000_000_000.0;
 
             // The memory usage gets converted to MB
-            double memoryUsage = (double)(memoryBefore - memoryAfter) / 1_048_576.0;
+            double memoryUsage = (double)(memoryAfter - memoryBefore) / 1_048_576.0;
 
             return new AlgorithmResult(algorithmMap, statusCode, pathLength, pathPositions, computingTime, memoryUsage);
         }
