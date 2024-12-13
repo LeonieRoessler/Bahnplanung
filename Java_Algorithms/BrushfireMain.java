@@ -12,7 +12,7 @@ public class BrushfireMain {
         // Reads in the map, applies the Brushfire-algorithm to it and saves the results to a JSON-file
         CSVReader csvReader = new CSVReader(args[0]);
         CSVReaderResult csvResult = csvReader.readFromCSV();
-        Brushfire brushfire = new Brushfire(csvResult.getMap(), csvResult.getAlgorithmMap(), csvResult.getStartRowIndex(), csvResult.getStartColumnIndex(), csvResult.getGoalRowIndex(), csvResult.getGoalColumnIndex(), csvResult.getStatusCode());
+        Brushfire brushfire = new Brushfire(csvResult.getMap(), csvResult.getAlgorithmMap(), csvResult.getStatusCode());
         AlgorithmResult algorithmResult = brushfire.applyBrushfire();
         JSONWriter jsonWriter = new JSONWriter(args[1], algorithmResult);
         jsonWriter.writeToJSON();

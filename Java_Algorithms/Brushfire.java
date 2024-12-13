@@ -2,7 +2,6 @@ import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.ArrayDeque;
 import java.util.Deque;
-import java.util.HashMap;
 
 /**
  * Brushfire is the class that applies the Brushfire-algorithm
@@ -26,47 +25,19 @@ public class Brushfire {
     private final int[][] algorithmMap;
 
     /**
-     * The start position row index on the map for the Brushfire-algorithm
-     */
-    private final int startRowIndex;
-
-    /**
-     * The start position column index on the map for the Brushfire-algorithm
-     */
-    private final int startColumnIndex;
-
-    /**
-     * The goal position row index on the map for the Brushfire-algorithm
-     */
-    private final int goalRowIndex;
-
-    /**
-     * The goal position column index on the map for the Brushfire-algorithm
-     */
-    private final int goalColumnIndex;
-
-    /**
      * The status code returned when reading the CSV-file
      */
-    private int statusCode;
+    private final int statusCode;
 
     /**
      * Constructor of the Brushfire class
      * @param map The map in form of a multidimensional array
      * @param algorithmMap The prepared map in form of a multidimensional array that will be overwritten by the Brushfire-algorithm
-     * @param startRowIndex The start position row index on the map for the Brushfire-algorithm
-     * @param startColumnIndex The start position column index on the map for the Brushfire-algorithm
-     * @param goalRowIndex The goal position row index on the map for the Brushfire-algorithm
-     * @param goalColumnIndex The goal position column index on the map for the Brushfire-algorithm
      * @param statusCode The status code returned when reading the CSV-file
      */
-    public Brushfire (int[][] map, int[][] algorithmMap, int startRowIndex, int startColumnIndex, int goalRowIndex, int goalColumnIndex, int statusCode) {
+    public Brushfire (int[][] map, int[][] algorithmMap, int statusCode) {
         this.map = map;
         this.algorithmMap = algorithmMap;
-        this.startRowIndex = startRowIndex;
-        this.startColumnIndex = startColumnIndex;
-        this.goalRowIndex = goalRowIndex;
-        this.goalColumnIndex = goalColumnIndex;
         this.statusCode = statusCode;
     }
 
@@ -100,9 +71,6 @@ public class Brushfire {
         // Saves the startTime and starts the observation of the memory usage
         long startTime = System.nanoTime();
         long memoryBefore = Runtime.getRuntime().totalMemory() - Runtime.getRuntime().freeMemory();
-
-        System.out.println(Runtime.getRuntime().totalMemory());
-        System.out.println(Runtime.getRuntime().freeMemory());
 
         // Initializes all the components needed for the Brushfire-algorithm
         Deque<int[]> positionQueue = new ArrayDeque<>();
@@ -144,9 +112,6 @@ public class Brushfire {
         // The tracking of the memory usage is stopped
         long memoryAfter = Runtime.getRuntime().totalMemory() - Runtime.getRuntime().freeMemory();
 
-        System.out.println(Runtime.getRuntime().totalMemory());
-        System.out.println(Runtime.getRuntime().freeMemory());
-
         // The endTime gets saved and the computingTime in seconds is calculated by subtracting the startTime
         long endTime = System.nanoTime();
         double computingTime = (double)(endTime - startTime)/1_000_000_000.0;
@@ -155,9 +120,6 @@ public class Brushfire {
         double memoryUsage = (double)(memoryAfter - memoryBefore) / 1_048_576.0;
 
         BigDecimal decimalComputingTime = new BigDecimal(computingTime).setScale(19, RoundingMode.HALF_UP);
-
-        System.out.println(memoryBefore);
-        System.out.println(memoryAfter);
 
         return new AlgorithmResult(algorithmMap, statusCode, pathLength, pathPositions, decimalComputingTime, memoryUsage);
     }
