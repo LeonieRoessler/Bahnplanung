@@ -1,26 +1,41 @@
+#pragma once
 #include <iostream>
 #include "Map.h"
 #include <nlohmann/json.hpp>
 #include <fstream>
+#include <vector>
 
 using namespace std;
 
 class ParseJson
 {
 public:
-	string filename ="none";
+	ParseJson(string filename, string algorithm, string language);
 	string language = "none";
 	string algorithm = "none";
-	int status_code = 0;
+	string filename = "none";
+	int statusCode = 0;
 
-	int path_length = 0;
-	float computing_time = 0;
-	float memory_usage = 0;
-	ParseJson(string filename);
+	int pathLength = 0;
+	float computingTime = 0;
+	float memoryUsage = 0;
 
-	Map algorithm_map;
+	const Map& getAlgorithmMap() const;
+
+	string getAlgorithm() const;
+
+	string getLanguage() const;
+
+	vector<pair<int, int>> getPath() const;
+
+	float getComputingTime() const;
+
+	float getMemoryUsage() const;
+
+	Map algorithmMap;
+
 	//vector<vector<int>> algorithm_map;      // 2D-Matrix
-	vector<pair<int, int>> path;           // Liste von Koordinaten
+	vector<pair<int, int>> path;   // Liste von Koordinaten
 
 	void displayData() const;
 	// Methode: JSON-Datei parsen und Attribute befüllen
@@ -28,7 +43,7 @@ public:
 
 private:
 	// Hilfsmethode, um die Map aus JSON-Daten zu initialisieren
-	void initializeMap(const nlohmann::json& algorithm_map_json);
+	void initializeMap(const nlohmann::json& algorithmMapJson);
 	//Konstruktor zum Parsen 
 	//Dateiname Angeben
 	//Attribute: language, algorithm

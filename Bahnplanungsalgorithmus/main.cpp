@@ -1,22 +1,34 @@
 #include "Map.h"
 #include "MapToCSV.h"
 #include "MapWindow.h"
+#include "ParseJson.h"
+#include "ResultsWindow.h"
 
 int main() {
     // Karte erstellen
     Map map(11, 11);
-
+    map.addFrame();
+    vector<Algorithm> algorithms;
+    vector<ParseJson> parsedResults;
     //ToDo: Rand kann nicht geändert werden (und wird ggf nicht geprinted)
     //DONE: Start/Ziel wird bei erneutem Setzen gelöscht 
 
 
     // Fenster mit Karte starten
-    MapWindow mapWindow(map);
+    MapWindow mapWindow(map, algorithms);
     mapWindow.run();
 
     //ToDo: andere Prozesse iniziieren
     //ToDo: JSON anderer Prozesse einlesen 
 
+    string filename = "result";
+    for (const auto& alg : algorithms) {
+        filename += "_" + alg.getName() + "_" + alg.getLanguage() + ".json";  // Übergabe im Format "Name:Sprache"
+        parsedResults.push_back(ParseJson(filename, alg.getName(), alg.getLanguage()));
+    }
+    
+    ResultsWindow resultsWindow(map, algorithms, parsedResults);
+    resultsWindow.run();
 
     //Window: Zeilen: Map/Pfade, Algorithmus, Pfadlänge, Python Zeit, C++ Zeit, Java Zeit
 

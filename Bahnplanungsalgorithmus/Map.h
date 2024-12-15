@@ -10,6 +10,7 @@ public:
     int getTile(int x, int y) const;
     int getWidth() const;
     int getHeight() const;
+    void addFrame();
 
 private:
     int width, height;

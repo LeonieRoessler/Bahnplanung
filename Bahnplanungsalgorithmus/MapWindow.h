@@ -4,17 +4,20 @@
 #include <SFML/Graphics.hpp>
 #include "Map.h"
 #include <iostream>
+#include "Algorithm.h"
 
 class MapWindow {
 public:
     // Konstruktor
-    MapWindow(Map& map);
-
+    MapWindow(Map& map, vector<Algorithm>& algorithms);
 
     // Startet die Hauptschleife des Fensters
     void run();
 
+    void close();
+
 private:
+
     // Handhabung von Ereignissen (z. B. Maus- oder Tastaturaktionen)
     void handleEvents();
 
@@ -24,8 +27,20 @@ private:
     // Methode, die bei einem Button-Klick ausgeführt wird
     void onButtonClick();
 
+    // Labels und Checkboxen erstellen
+    void initCheckboxes();
+
+    // Zeichne Checkboxen
+    void drawCheckboxes();
+
+
+    void createAlgorithms(int i);
+
     // Referenz zur Karte
     Map& map;
+
+    //Vektor für Algortihmen
+    vector<Algorithm>& algorithms;
 
     // SFML-Fenster
     sf::RenderWindow window;
@@ -38,6 +53,17 @@ private:
 
     // Button-Text
     sf::Text buttonText;
+
+    // Labels für die Algorithmen
+    sf::Text alg_label[3] = {};
+
+    // Labels für Programmiersprachen
+    sf::Text lang_label[3] = {};
+
+    // Checkboxen für Auswahl
+    sf::RectangleShape checkbox[9];  // Array für 9 Checkboxen
+    bool checkboxState[9] = {false};           // Zustand der Checkboxen
 };
+
 
 #endif

@@ -137,6 +137,7 @@
     <ClCompile Include="MapToCSV.cpp" />
     <ClCompile Include="MapWindow.cpp" />
     <ClCompile Include="ParseJson.cpp" />
+    <ClCompile Include="ResultsWindow.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Algorithm.h" />
@@ -144,6 +145,7 @@
     <ClInclude Include="MapToCSV.h" />
     <ClInclude Include="MapWindow.h" />
     <ClInclude Include="ParseJson.h" />
+    <ClInclude Include="ResultsWindow.h" />
   </ItemGroup>
   <ItemGroup>
     <Font Include="assets\Arial.ttf">

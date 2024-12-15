@@ -1,9 +1,9 @@
 #include "ParseJson.h"
 
-ParseJson::ParseJson(string filename) : filename(filename), algorithm_map(0, 0) {
+
+ParseJson::ParseJson(string filename, string algorithm, string language) : filename(filename), algorithm(algorithm), language(language), algorithmMap(0, 0) {
 	parse();
 }
-
 
 void ParseJson::parse() {
     // JSON-Datei öffnen
@@ -20,15 +20,15 @@ void ParseJson::parse() {
     // Attribute parsen
     try {
         if (json_data.contains("computing_time")) {
-            computing_time = json_data["computing_time"].get<float>();
+            this->computingTime = json_data["computing_time"].get<float>();
         }
 
         if (json_data.contains("memory_usage")) {
-            memory_usage = json_data["memory_usage"].get<float>();
+            this->memoryUsage = json_data["memory_usage"].get<float>();
         }
 
         if (json_data.contains("path_length")) {
-            path_length = json_data["path_length"].get<int>();
+            this->pathLength = json_data["path_length"].get<int>();
         }
 
         if (json_data.contains("algorithm_map")) {
@@ -42,15 +42,15 @@ void ParseJson::parse() {
         }
 
         if (json_data.contains("status_code")) {
-            status_code = json_data["status_code"].get<int>();
+            this->statusCode = json_data["status_code"].get<int>();
         }
 
         if (json_data.contains("language")) {
-            language = json_data["language"].get<string>();
+            this->language = json_data["language"].get<string>();
         }
 
         if (json_data.contains("algorithm")) {
-            algorithm = json_data["algorithm"].get<string>();
+            this->algorithm = json_data["algorithm"].get<string>();
         }
     }
     catch (const nlohmann::json::exception& e) {
@@ -63,23 +63,23 @@ void ParseJson::initializeMap(const nlohmann::json& algorithm_map_json) {
     int map_height = algorithm_map_json.size();
 
     // Map erstellen (mit Rahmen: +2 für die Grenzen)
-    algorithm_map = Map(map_width + 2, map_height + 2);
+    algorithmMap = Map(map_width + 2, map_height + 2);
 
     // Algorithm Map-Daten einlesen und in Map setzen
     for (int y = 0; y < map_height; ++y) {
         for (int x = 0; x < map_width; ++x) {
-            algorithm_map.setTile(x + 1, y + 1, algorithm_map_json[y][x]); // +1 für Rahmen
+            algorithmMap.setTile(x + 1, y + 1, algorithm_map_json[y][x]); // +1 für Rahmen
         }
     }
 
     // Rahmen setzen (optional)
-    for (int x = 0; x < algorithm_map.getWidth(); ++x) {
-        algorithm_map.setTile(x, 0, 1);                           // Oben
-        algorithm_map.setTile(x, algorithm_map.getHeight() - 1, 1); // Unten
+    for (int x = 0; x < algorithmMap.getWidth(); ++x) {
+        algorithmMap.setTile(x, 0, 1);                           // Oben
+        algorithmMap.setTile(x, algorithmMap.getHeight() - 1, 1); // Unten
     }
-    for (int y = 0; y < algorithm_map.getHeight(); ++y) {
-        algorithm_map.setTile(0, y, 1);                           // Links
-        algorithm_map.setTile(algorithm_map.getWidth() - 1, y, 1); // Rechts
+    for (int y = 0; y < algorithmMap.getHeight(); ++y) {
+        algorithmMap.setTile(0, y, 1);                           // Links
+        algorithmMap.setTile(algorithmMap.getWidth() - 1, y, 1); // Rechts
     }
 }
 
@@ -87,15 +87,15 @@ void ParseJson::displayData() const {
     cout << "File Name: " << filename << endl;
     cout << "Language: " << language << endl;
     cout << "Algorithm: " << algorithm << endl;
-    cout << "Status Code: " << status_code << endl;
-    cout << "Path Length: " << path_length << endl;
-    cout << "Computing Time: " << computing_time << " seconds" << endl;
-    cout << "Memory Usage: " << memory_usage << " MB" << endl;
+    cout << "Status Code: " << statusCode << endl;
+    cout << "Path Length: " << pathLength << endl;
+    cout << "Computing Time: " << computingTime << " seconds" << endl;
+    cout << "Memory Usage: " << memoryUsage << " MB" << endl;
 
     cout << "Algorithm Map:" << endl;
-    for (int y = 0; y < algorithm_map.getHeight(); ++y) {
-        for (int x = 0; x < algorithm_map.getWidth(); ++x) {
-            cout << algorithm_map.getTile(x, y) << " ";
+    for (int y = 0; y < algorithmMap.getHeight(); ++y) {
+        for (int x = 0; x < algorithmMap.getWidth(); ++x) {
+            cout << algorithmMap.getTile(x, y) << " ";
         }
         cout << endl;
     }
@@ -106,3 +106,26 @@ void ParseJson::displayData() const {
     }
 }
 
+const Map& ParseJson::getAlgorithmMap() const {
+    return algorithmMap;
+}
+
+std::string ParseJson::getAlgorithm() const {
+    return algorithm;
+}
+
+std::string ParseJson::getLanguage() const {
+    return language;
+}
+
+float ParseJson::getComputingTime() const {
+    return computingTime;
+}
+
+float ParseJson::getMemoryUsage() const {
+    return memoryUsage;
+}
+
+vector<pair<int, int>> ParseJson::getPath() const {
+    return path;
+}

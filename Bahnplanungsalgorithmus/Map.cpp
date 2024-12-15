@@ -3,6 +3,10 @@
 
 Map::Map(int width, int height)
     : width(width), height(height), tiles(height, std::vector<int>(width, 0)) {
+
+}
+
+void Map::addFrame() {
     // Füge einen Rahmen aus 1en hinzu
     for (int i = 0; i < height; ++i) {
         tiles[i][0] = 1;                 // Linker Rand
