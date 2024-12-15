@@ -3,6 +3,7 @@
 #include "MapWindow.h"
 #include "ParseJson.h"
 #include "ResultsWindow.h"
+#include <fstream>
 
 int main() {
     // Karte erstellen
@@ -24,7 +25,13 @@ int main() {
     string filename = "result";
     for (const auto& alg : algorithms) {
         filename += "_" + alg.getName() + "_" + alg.getLanguage() + ".json";  // Übergabe im Format "Name:Sprache"
-        parsedResults.push_back(ParseJson(filename, alg.getName(), alg.getLanguage()));
+        ifstream file(filename);
+        if (file.is_open()) {
+            parsedResults.push_back(ParseJson(filename, alg.getName(), alg.getLanguage()));
+        }
+        else {
+            //Error
+        }
     }
     
     ResultsWindow resultsWindow(map, algorithms, parsedResults);

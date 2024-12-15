@@ -46,7 +46,7 @@ private:
     vector<Algorithm> algorithms;
     vector<ParseJson> parsedResults;
     // Neue Datenstrukturen
-    std::map<std::string, const ParseJson*> groupedResults; // Gruppiert nach Algorithmusname
+    std::map<std::string, std::vector<const ParseJson*>> groupedResults;// Gruppiert nach Algorithmusname
     std::map<std::string, std::map<std::string, const ParseJson*>> resultsByLanguage; // Nach Sprache gruppiert
 
 
