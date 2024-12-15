@@ -11,7 +11,7 @@ public class CSVReader {
     /**
     * The path to the CSV-file
     */
-    private String csvPath;
+    private final String csvPath;
 
     /**
     * The map in form of a multidimensional array
@@ -89,7 +89,7 @@ public class CSVReader {
 
             // Calls method to initialize the map for the path planning algorithm
             initializeAlgorithmMap();
-            return new CSVReaderResult(this.map, this.algorithmMap, this.startRowIndex, this.startColumnIndex, this.goalRowIndex, this.goalColumnIndex, this.statusCode);
+            return new CSVReaderResult(this.map, this.algorithmMap, this.startRowIndex, this.startColumnIndex, this.goalRowIndex, this.goalColumnIndex, statusCode);
 
         // Returns corresponding error codes in case of errors
         } catch (FileNotFoundException e) {
@@ -99,70 +99,6 @@ public class CSVReader {
         } catch (Exception e) {
             return new CSVReaderResult(null, null, -1, -1, -1, -1, 509);
         }
-    }
-
-    public String getCsvPath() {
-        return csvPath;
-    }
-
-    public void setCsvPath(String csvPath) {
-        this.csvPath = csvPath;
-    }
-
-    public int[][] getMap() {
-        return map;
-    }
-
-    public void setMap(int[][] map) {
-        this.map = map;
-    }
-
-    public int[][] getAlgorithmMap() {
-        return algorithmMap;
-    }
-
-    public void setAlgorithmMap(int[][] algorithmMap) {
-        this.algorithmMap = algorithmMap;
-    }
-
-    public int getStartRowIndex() {
-        return startRowIndex;
-    }
-
-    public void setStartRowIndex(int startRowIndex) {
-        this.startRowIndex = startRowIndex;
-    }
-
-    public int getStartColumnIndex() {
-        return startColumnIndex;
-    }
-
-    public void setStartColumnIndex(int startColumnIndex) {
-        this.startColumnIndex = startColumnIndex;
-    }
-
-    public int getGoalRowIndex() {
-        return goalRowIndex;
-    }
-
-    public void setGoalRowIndex(int goalRowIndex) {
-        this.goalRowIndex = goalRowIndex;
-    }
-
-    public int getGoalColumnIndex() {
-        return goalColumnIndex;
-    }
-
-    public void setGoalColumnIndex(int goalColumnIndex) {
-        this.goalColumnIndex = goalColumnIndex;
-    }
-
-    public int getStatusCode() {
-        return statusCode;
-    }
-
-    public void setStatusCode(int statusCode) {
-        this.statusCode = statusCode;
     }
 
     /**
@@ -201,7 +137,7 @@ public class CSVReader {
                         startColumnIndex = -1;
                         goalRowIndex = -1;
                         goalColumnIndex = -1;
-                        statusCode = 422;
+                        statusCode = 423;
                         return;
                     }
                     goalRowIndex = rowIndex;
@@ -231,5 +167,6 @@ public class CSVReader {
             statusCode = 403;
             return;
         }
+        statusCode = 200;
     }
 }

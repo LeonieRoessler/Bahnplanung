@@ -4,12 +4,12 @@ def reconstruct_path(start_position, goal_position, previous_positions):
     Arguments:
         start_position (tuple[int, int]): The start position on the map.
         goal_position (tuple[int, int]): The goal position on the map.
-        previous_positions (set): A set that includes the previous position for every visited position on the map ({position: previous position}).
+        previous_positions (dict): A set that includes the previous position for every visited position on the map ({position: previous position}).
 
     Returns:
         list[tuple[int, int]]: The list of path positions.
     """
-    # Reconstruct the path of a algorithm starting from the goal and looping through the previous positions
+    # Reconstructs the path of a path planning algorithm starting from the goal and looping through the previous positions
     path_positions = []
     current_position = goal_position
     while current_position != start_position:

@@ -104,16 +104,17 @@ def a_star(map, algorithm_map, start_position, goal_position, heuristic_type, st
     open_priority_queue = []
     previous_positions = {}
     path_length = -1
+    path_positions = []
 
     # Starts the A*-algorithm at the start position by setting its distance and adding it to the priority queue
     algorithm_map[start_position[0]][start_position[1]] = 0
-    heapq.heappush(open_priority_queue, (0, start_position[0], start_position[1], 0))
+    heapq.heappush(open_priority_queue, (0, 0, start_position[0], start_position[1]))
     g_scores = {start_position: 0}
 
     # Performs the A*-algorithm as long as there are still tiles in the open_priority_queue with unchecked neighbours
     while open_priority_queue:
         # Reads a position and saved distance to the start position (g_score) from the open_priority_queue based on the lowest estimated distance towards the goal position (f_score)
-        _, row_index, column_index, g_score = heapq.heappop(open_priority_queue)
+        _, g_score, row_index, column_index = heapq.heappop(open_priority_queue)
 
         # If the read position is the goal position its distance is saved as the path_length and the algorithm stops
         if (row_index, column_index) == goal_position:
@@ -130,7 +131,7 @@ def a_star(map, algorithm_map, start_position, goal_position, heuristic_type, st
                 # The g_score of the current position is calculated
                 current_g_score = g_score + 1
 
-                # The current values only gets added to the open_priority_queue if there was no g_score calculated for the position which is lower than the current_g_score
+                # The current values only get added to the open_priority_queue if there was no g_score calculated for the position which is lower than the current_g_score
                 if current_g_score < g_scores.get((current_row_index, current_column_index), float('inf')):
                     # The f_score of the current position is calculated
                     current_f_score = current_g_score + heuristic((current_row_index, current_column_index), goal_position)
@@ -138,7 +139,7 @@ def a_star(map, algorithm_map, start_position, goal_position, heuristic_type, st
                     # The determined g_score which represents the distance is saved to the algorithm_map, added to g_scores, and all the values get added to the open_priority_queue
                     algorithm_map[current_row_index][current_column_index] = current_g_score
                     g_scores[current_row_index, current_column_index] = current_g_score
-                    heapq.heappush(open_priority_queue, (current_f_score, current_row_index, current_column_index, current_g_score))
+                    heapq.heappush(open_priority_queue, (current_f_score, current_g_score, current_row_index, current_column_index))
 
                     # Saves the previous position to each current position to determine the path towards the goal at a later step
                     previous_positions[(current_row_index, current_column_index)] = (row_index, column_index)
@@ -165,6 +166,13 @@ def a_star(map, algorithm_map, start_position, goal_position, heuristic_type, st
 
 
 if __name__ == "__main__":
+    """The main function of the A*-algorithm.
+
+    Arguments:
+        csv_path (string): The path towards the CSV-file with the map the A*-algorithm is supposed to be applied to.
+        json_path (string): The path towards the JSON-file where the results of the A*-algorithm are saved.
+        heuristic_type (string): The heuristic function type to calculate the distance towards the goal position.
+    """
     parser = argparse.ArgumentParser(description="A*-Algorithmus auf Basis einer Map in einer CSV-Datei und Ausgabe in einer JSON-Datei")
     parser.add_argument("csv_path", help="Pfad zur Eingabe-CSV-Datei")
     parser.add_argument("json_path", help="Pfad zur Ausgabe-JSON-Datei")
@@ -175,7 +183,7 @@ if __name__ == "__main__":
     )
     args = parser.parse_args()
 
-    # Load map and apply A* algorithm
+    # Reads in the map, applies the A*-algorithm to it and saves the results to a JSON-file
     map, algorithm_map, start_position, goal_position, status_code = read_from_csv(args.csv_path)
     algorithm_map, status_code, path_length, path_positions, computing_time, memory_usage = a_star(map, algorithm_map, start_position, goal_position, args.heuristic_type, status_code)
     write_to_json(args.json_path, algorithm_map, status_code, path_length, path_positions, computing_time, memory_usage)
