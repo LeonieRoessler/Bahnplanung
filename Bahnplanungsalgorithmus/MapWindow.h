@@ -7,17 +7,37 @@
 
 class MapWindow {
 public:
-    MapWindow(const Map& map, const std::string& algorithmName);
+    // Konstruktor
+    MapWindow(Map& map);
+
+
+    // Startet die Hauptschleife des Fensters
     void run();
 
 private:
-    void drawMap();
-    void drawText();
+    // Handhabung von Ereignissen (z. B. Maus- oder Tastaturaktionen)
+    void handleEvents();
 
+    // Zeichnet die Karte und die Benutzeroberfläche
+    void draw();
+
+    // Methode, die bei einem Button-Klick ausgeführt wird
+    void onButtonClick();
+
+    // Referenz zur Karte
+    Map& map;
+
+    // SFML-Fenster
     sf::RenderWindow window;
+
+    // Schriftart für den Button-Text
     sf::Font font;
-    sf::Text text;
-    const Map& map; // Referenz auf die anzuzeigende Map
+
+    // Button (Rechteckform)
+    sf::RectangleShape button;
+
+    // Button-Text
+    sf::Text buttonText;
 };
 
 #endif
