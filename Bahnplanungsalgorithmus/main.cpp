@@ -7,7 +7,7 @@ int main() {
     Map map(11, 11);
 
     //ToDo: Rand kann nicht geändert werden (und wird ggf nicht geprinted)
-    //ToDo: Start/Ziel wird bei erneutem Setzen gelöscht 
+    //DONE: Start/Ziel wird bei erneutem Setzen gelöscht 
 
 
     // Fenster mit Karte starten

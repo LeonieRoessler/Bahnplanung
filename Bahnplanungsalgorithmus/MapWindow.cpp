@@ -103,9 +103,22 @@ void MapWindow::handleEvents() {
                 int x = mousePos.x / 50;
                 int y = mousePos.y / 50;
 
-                // Kachel umschalten (0 zu 1 oder 1 zu 0)
-                int currentValue = map.getTile(x, y);
-                map.setTile(x, y, currentValue == 0 ? 2 : 0);
+                // Wenn auf ein existierendes Startfeld geklickt wird, zurücksetzen
+                if (map.getTile(x, y) == 2) {
+                    map.setTile(x, y, 0);
+                }
+                else {
+                    // Vorherige Startfelder zurücksetzen
+                    for (int row = 0; row < map.getHeight(); ++row) {
+                        for (int col = 0; col < map.getWidth(); ++col) {
+                            if (map.getTile(col, row) == 2) {
+                                map.setTile(col, row, 0);
+                            }
+                        }
+                    }
+                    // Neues Startfeld setzen
+                    map.setTile(x, y, 2);
+                }
             }
 
             // Prüfe, ob der Button angeklickt wurde
@@ -123,9 +136,21 @@ void MapWindow::handleEvents() {
                 int x = mousePos.x / 50;
                 int y = mousePos.y / 50;
 
-                // Kachel umschalten (0 zu 1 oder 1 zu 0)
-                int currentValue = map.getTile(x, y);
-                map.setTile(x, y, currentValue == 0 ? 3 : 0);
+                if (map.getTile(x, y) == 3) {
+                    map.setTile(x, y, 0);
+                }
+                else {
+                    // Vorherige Zielfelder zurücksetzen
+                    for (int row = 0; row < map.getHeight(); ++row) {
+                        for (int col = 0; col < map.getWidth(); ++col) {
+                            if (map.getTile(col, row) == 3) {
+                                map.setTile(col, row, 0);
+                            }
+                        }
+                    }
+                    // Neues Zielfeld setzen
+                    map.setTile(x, y, 3);
+                }
             }
 
             // Prüfe, ob der Button angeklickt wurde
@@ -139,16 +164,27 @@ void MapWindow::handleEvents() {
     }
 }
 
-// Aktion für den Button
 void MapWindow::onButtonClick() {
     std::cout << "Button wurde gedrückt! Aktion ausführen..." << std::endl;
-    //Karte exportieren
+
+    // Karte exportieren
     try {
         MapToCSV exporter(map);
         exporter.exportToFile("map.csv");
         std::cout << "Map erfolgreich als map.csv exportiert!" << std::endl;
     }
     catch (const std::exception& e) {
-        std::cerr << "Fehler: " << e.what() << std::endl;
+        std::cerr << "Fehler beim Exportieren der Karte: " << e.what() << std::endl;
+        return;
+    }
+
+    // Python-Skript starten
+    std::cout << "Starte das Python-Skript für Bahnplanung..." << std::endl;
+    int scriptStatus = std::system("python3 run_algorithms.py");
+    if (scriptStatus == 0) {
+        std::cout << "Python-Skript erfolgreich ausgeführt." << std::endl;
+    }
+    else {
+        std::cerr << "Fehler beim Ausfuehren des Python-Skripts." << std::endl;
     }
 }
