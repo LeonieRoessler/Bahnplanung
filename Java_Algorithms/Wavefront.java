@@ -98,7 +98,6 @@ public class Wavefront {
         }
 
         // Saves the startTime and starts the observation of the memory usage
-        long startTime = System.nanoTime();
         long memoryBefore = 0;
 
         for (MemoryPoolMXBean memoryPool : ManagementFactory.getMemoryPoolMXBeans()) {
@@ -107,6 +106,8 @@ public class Wavefront {
                 memoryBefore = memoryBefore + usedMemory;
             }
         }
+
+        long startTime = System.nanoTime();
 
         // Initializes all the components needed for the Wavefront-algorithm
         Deque<int[]> positionQueue = new ArrayDeque<>();
@@ -159,6 +160,9 @@ public class Wavefront {
             pathPositions = pathReconstructor.reconstructPath();
         }
 
+        // The endTime gets saved
+        long endTime = System.nanoTime();
+
         // The tracking of the memory usage is stopped
         long memoryAfter = 0;
 
@@ -169,8 +173,7 @@ public class Wavefront {
             }
         }
 
-        // The endTime gets saved and the computingTime in seconds is calculated by subtracting the startTime
-        long endTime = System.nanoTime();
+        // The computingTime in seconds is calculated by subtracting the startTime
         double computingTime = (double)(endTime - startTime)/1_000_000_000.0;
 
         // The memory usage gets converted to MB

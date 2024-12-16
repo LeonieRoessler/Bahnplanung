@@ -78,12 +78,14 @@ def brushfire(map, algorithm_map, status_code):
                 algorithm_map[current_row_index][current_column_index] = distance + 1
                 position_queue.append((current_row_index, current_column_index, distance + 1))
 
+    # The end_time gets saved
+    end_time = time.perf_counter()
+
     # The memory usage gets saved and the tracking is stopped
     _, peak = tracemalloc.get_traced_memory()
     tracemalloc.stop()
 
-    # The end_time gets saved and the computing_time in seconds is calculated by subtracting the start_time and rounding the result to two decimal places
-    end_time = time.perf_counter()
+    # The computing_time in seconds is calculated by subtracting the start_time
     computing_time = end_time - start_time
 
     # The memory usage gets converted to MB

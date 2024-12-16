@@ -151,12 +151,14 @@ def a_star(map, algorithm_map, start_position, goal_position, heuristic_type, st
         # Reconstruct the A*-algorithms path
         path_positions = reconstruct_path(start_position, goal_position, previous_positions)
 
+    # The end_time gets saved
+    end_time = time.perf_counter()
+
     # The memory usage gets saved and the tracking is stopped
     _, peak = tracemalloc.get_traced_memory()
     tracemalloc.stop()
 
-    # The end_time gets saved and the computing_time in seconds is calculated by subtracting the start_time and rounding the result to two decimal places
-    end_time = time.perf_counter()
+    # The computing_time in seconds is calculated by subtracting the start_time
     computing_time = end_time - start_time
 
     # The memory usage gets converted to MB
