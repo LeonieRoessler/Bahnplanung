@@ -246,7 +246,7 @@ int main(int argc, char* argv[]) {
     float memoryUsage = memoryAfter - memoryBefore;
 
     // Speichern der Ergebnisse
-    saveResultsToJson(matrix, statusCode, distanceToGoal, path, duration.count(), memoryUsage, result_name);
+    saveResultsToJson(visited, statusCode, distanceToGoal, path, duration.count(), memoryUsage, result_name);
 
     return 0;
 }
