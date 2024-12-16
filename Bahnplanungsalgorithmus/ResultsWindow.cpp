@@ -1,4 +1,5 @@
 #include "ResultsWindow.h"
+#include <math.h>
 
 ResultsWindow::ResultsWindow(Map& originalMap, const std::vector<Algorithm>& algorithms, vector<ParseJson>& parsedResults)
     : map(originalMap), algorithms(algorithms), parsedResults(parsedResults), button(sf::Vector2f(100, 30)), buttonText("Close", font, 20) {
@@ -50,6 +51,9 @@ void ResultsWindow::draw() {
     window.clear(sf::Color(169, 169, 169));
 
     int xOffset = 500; // Startposition für die Darstellung der Karten und Ergebnisse
+    if (map.getWidth() > 12) {
+        tileSize = 25;
+    }
 
     drawMap(map, 0, 50);
 
@@ -88,12 +92,15 @@ void ResultsWindow::draw() {
             string language = result->getLanguage();
             float computingTime = result->getComputingTime();
             float memoryUsage = result->getMemoryUsage();
+            int pathLength = result->pathLength;
             drawPath(map, result->getPath(), xOffset, 50);
-            //drawNumbers(map, parsedResult.getAlgorithmMap(), xOffset, 50);
+            drawNumbers(result->getAlgorithmMap(), xOffset, 50);
             mapWidth = result->getAlgorithmMap().getWidth();
-            string info = language + ":   Computing Time: " + std::to_string(computingTime) + "ms, " + "Memory Usage: " + std::to_string(memoryUsage) + "MB";
+            string info = language + ":   Computing Time: " + to_string(computingTime) + "ms, " + "Memory Usage: " + to_string(memoryUsage) + "MB";
             drawText(info, xOffset, 100 + result->getAlgorithmMap().getHeight() * 50 + yOffset);
-            yOffset+=30;
+            info = "               Memory Usage: " + to_string(memoryUsage) + "MB "+ "Path Length: " + to_string(pathLength);
+            drawText(info, xOffset, 100 + result->getAlgorithmMap().getHeight() * 50 + yOffset + 20);
+            yOffset+=40;
         }
         xOffset += mapWidth * 50 ;
     }
@@ -147,8 +154,8 @@ void ResultsWindow::drawPath(const Map& map, const vector<pair<int, int>>& path,
     //Original Map 
     for (int row = 0; row < map.getHeight(); ++row) {
         for (int col = 0; col < map.getWidth(); ++col) {
-            sf::RectangleShape tile(sf::Vector2f(50, 50));
-            tile.setPosition(x + col * 50, y + row * 50);
+            sf::RectangleShape tile(sf::Vector2f(tileSize, tileSize));
+            tile.setPosition(x + col * tileSize, y + row * tileSize);
             tile.setOutlineThickness(1);
             tile.setOutlineColor(sf::Color::Black);
             // Überprüfe, ob das aktuelle Tile Teil des Pfades ist
@@ -179,14 +186,31 @@ void ResultsWindow::drawPath(const Map& map, const vector<pair<int, int>>& path,
 
 void ResultsWindow::drawNumbers(const Map& map, int startX, int startY) {
 
+
+    for (int row = 0; row < map.getHeight(); ++row) {
+        for (int col = 0; col < map.getWidth(); ++col) {
+            sf::RectangleShape tile(sf::Vector2f(tileSize, tileSize));
+            tile.setPosition(startX + col * tileSize, startY + row * tileSize);
+            // Erstelle den Text für die Zahl
+            sf::Text text;
+            text.setFont(font);
+            text.setString(std::to_string(map.getTile(col, row))); // Zahl aus der Map
+            text.setCharacterSize(15); // Textgröße
+            text.setFillColor(sf::Color::Black); // Farbe des Texts
+            text.setPosition(startX + col * tileSize + tileSize / 3, startY + row * tileSize + tileSize / 4); // Position im Kästchen
+
+            // Zeichne den Text
+            window.draw(text);
+        }
+    }
 }
 
 void ResultsWindow::drawMap(const Map& map, int startX, int startY) {
     // Zeichne die Karte (start bei (startX, startY))
     for (int row = 0; row < map.getHeight(); ++row) {
         for (int col = 0; col < map.getWidth(); ++col) {
-            sf::RectangleShape tile(sf::Vector2f(50, 50));
-            tile.setPosition(startX + col * 50, startY + row * 50);
+            sf::RectangleShape tile(sf::Vector2f(tileSize, tileSize));
+            tile.setPosition(startX + col * tileSize, startY + row * tileSize);
             tile.setOutlineThickness(1);
             tile.setOutlineColor(sf::Color::Black);
 

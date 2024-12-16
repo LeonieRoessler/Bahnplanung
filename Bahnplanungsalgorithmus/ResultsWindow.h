@@ -49,6 +49,7 @@ private:
     std::map<std::string, std::vector<const ParseJson*>> groupedResults;// Gruppiert nach Algorithmusname
     std::map<std::string, std::map<std::string, const ParseJson*>> resultsByLanguage; // Nach Sprache gruppiert
 
+    int tileSize = 50;
 
     // SFML-Fenster
     sf::RenderWindow window;

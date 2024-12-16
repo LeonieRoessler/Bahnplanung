@@ -6,8 +6,9 @@
 // Konstruktor
 MapWindow::MapWindow(Map& map, vector<Algorithm>& algorithms) : map(map), button(sf::Vector2f(100, 30)), buttonText("Action", font, 20), algorithms(algorithms) {
 
+    
     // Fenster initialisieren
-    window.create(sf::VideoMode(1000, 700), "Map Editor");
+    window.create(sf::VideoMode(map.getWidth() * 70+200, map.getHeight() * 60+100), "Map Editor");
 
     // Schriftart laden
     if (!font.loadFromFile("assets/arial.ttf")) {
@@ -265,15 +266,17 @@ void MapWindow::drawCheckboxes() {
 
 void MapWindow::initCheckboxes() {
     //Labels erstellen
+    int xStart = map.getWidth() * 60 + 50;
+
     for (int i = 0; i < 3; i++) {
         alg_label[i].setFont(font);
         alg_label[i].setCharacterSize(18);
         alg_label[i].setFillColor(sf::Color::Black);
-        alg_label[i].setPosition(670, 95 + i * 40);
+        alg_label[i].setPosition(xStart, 95 + i * 40);
         lang_label[i].setFont(font);
         lang_label[i].setCharacterSize(18);
         lang_label[i].setFillColor(sf::Color::Black);
-        lang_label[i].setPosition(690 + i * 60, 70);
+        lang_label[i].setPosition(xStart + 30 + i * 60, 70);
     }
 
     alg_label[0].setString("wf");
@@ -294,7 +297,7 @@ void MapWindow::initCheckboxes() {
     // Position der Checkboxen
     for (int i = 0; i < 3; ++i) {
         for (int j = 0; j < 3; ++j) {
-            checkbox[i * 3 + j].setPosition(700 + j * 60, 100 + i * 40);  // 3x3 Raster
+            checkbox[i * 3 + j].setPosition(xStart + 40 + j * 60, 100 + i * 40);  // 3x3 Raster
         }
     }
 

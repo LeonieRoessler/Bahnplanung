@@ -63,15 +63,15 @@ void ParseJson::initializeMap(const nlohmann::json& algorithm_map_json) {
     int map_height = algorithm_map_json.size();
 
     // Map erstellen (mit Rahmen: +2 für die Grenzen)
-    algorithmMap = Map(map_width + 2, map_height + 2);
+    algorithmMap = Map(map_width, map_height );
 
     // Algorithm Map-Daten einlesen und in Map setzen
     for (int y = 0; y < map_height; ++y) {
         for (int x = 0; x < map_width; ++x) {
-            algorithmMap.setTile(x + 1, y + 1, algorithm_map_json[y][x]); // +1 für Rahmen
+            algorithmMap.setTile(x , y , algorithm_map_json[y][x]); // +1 für Rahmen
         }
     }
-
+    /*
     // Rahmen setzen (optional)
     for (int x = 0; x < algorithmMap.getWidth(); ++x) {
         algorithmMap.setTile(x, 0, 1);                           // Oben
@@ -80,7 +80,7 @@ void ParseJson::initializeMap(const nlohmann::json& algorithm_map_json) {
     for (int y = 0; y < algorithmMap.getHeight(); ++y) {
         algorithmMap.setTile(0, y, 1);                           // Links
         algorithmMap.setTile(algorithmMap.getWidth() - 1, y, 1); // Rechts
-    }
+    }*/
 }
 
 void ParseJson::displayData() const {

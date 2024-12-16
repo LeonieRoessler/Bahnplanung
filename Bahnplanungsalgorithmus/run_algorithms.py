@@ -41,11 +41,11 @@ def main():
         
         # Befehl basierend auf dem Algorithmus und der Sprache
         if name == "Wavefront":
-            script_name = "wavefront"
+            script_name = "Wavefront"
         elif name == "Bushfire":
-            script_name = "bushfire"
+            script_name = "Bushfire"
         elif name == "AStar":
-            script_name = "a_star"
+            script_name = "A_star"
         else:
             print(f"Unbekannter Algorithmus: {name}")
             continue
@@ -60,11 +60,41 @@ def main():
             command = f"python3 {folder}/{script_name}.py {input_map} result_{name}_Python.json"
         elif language == "Java":
             folder = "Java_Algorithms"
-            # Prüfe, ob die .jar-Datei existiert
-            if not os.path.isfile(f"{folder}/{script_name}.jar"):
-                print(f"Fehler: Die Datei {folder}/{script_name}.jar wurde nicht gefunden.")
+            
+            # Finde alle .java-Dateien im Ordner
+            java_files = [f for f in os.listdir(folder) if f.endswith('.java')]
+            
+            if not java_files:
+                print(f"Fehler: Es wurden keine Java-Dateien im Ordner {folder} gefunden.")
                 continue
-            command = f"java -jar {folder}/{script_name}.jar {input_map} result_{name}_Java.json"
+            
+            # Kompiliere alle .java-Dateien
+            compile_command = f"javac {folder}/*.java"
+            compile_process = subprocess.run(compile_command, shell=True)
+            
+            if compile_process.returncode != 0:
+                print(f"Fehler beim Kompilieren der Dateien im Ordner {folder}.")
+                continue
+
+            # Nachdem die Dateien erfolgreich kompiliert wurden, prüfe, ob die .class-Dateien existieren
+            class_files = [f"{folder}/{f.replace('.java', '.class')}" for f in java_files]
+            
+            # Prüfe, ob alle .class-Dateien existieren
+            for class_file in class_files:
+                if not os.path.isfile(class_file):
+                    print(f"Fehler: Die kompilierte Datei {class_file} wurde nicht gefunden.")
+                    continue
+            
+            # Führe das kompilierte Java-Programm aus
+            class_name = script_name  # Der Name der Klasse, die du ausführen möchtest
+            input_map = "some_input_map"  # Beispiel für Input-Map
+            command = f"java -cp {folder} {class_name} {input_map} result_{name}_Java.json"
+            run_process = subprocess.run(command, shell=True)
+            
+            if run_process.returncode != 0:
+                print(f"Fehler beim Ausführen des Java-Programms {class_name}.")
+            else:
+                print(f"Das Java-Programm {class_name} wurde erfolgreich ausgeführt.")
         elif language == "Cpp":
             folder = "Cpp_Algorithms"
             # Prüfe, ob die ausführbare Datei existiert
