@@ -59,6 +59,7 @@ def wavefront(map, algorithm_map, start_position, goal_position, status_code):
     previous_positions = {}
     path_length = -1
     path_positions = []
+    goal_found = False
 
     # Starts the Wavefront-algorithm at the start position by setting the distance
     algorithm_map[start_position[0]][start_position[1]] = 0
@@ -68,11 +69,6 @@ def wavefront(map, algorithm_map, start_position, goal_position, status_code):
     while position_queue:
         # Reads a position and saved distance from the position_queue according to the First-In-First-Out principle
         row_index, column_index, distance = position_queue.popleft()
-
-        # If the read position is the goal position its distance is saved as the path_length and the algorithm stops
-        if (row_index, column_index) == goal_position:
-            path_length = distance
-            break
 
         # For each of the four tiles next to the read position the distance is saved
         for row_direction, column_direction in directions:
@@ -87,6 +83,14 @@ def wavefront(map, algorithm_map, start_position, goal_position, status_code):
 
                     # Saves the previous position to each current position to determine the path towards the goal at a later step
                     previous_positions[(current_row_index, current_column_index)] = (row_index, column_index)
+
+                    # If the read position is the goal position its distance is saved as the path_length and the algorithm stops
+                    if (current_row_index, current_column_index) == goal_position:
+                        path_length = distance + 1
+                        goal_found = True
+
+        if goal_found:
+            break
 
     # If no path towards the goal could be found, the corresponding status_code gets returned
     if path_length == -1:

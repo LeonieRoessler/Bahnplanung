@@ -111,18 +111,13 @@ public class Wavefront {
         positionQueue.addLast(new int[]{startRowIndex, startColumnIndex, 0});
 
         // Performs the Wavefront-algorithm as long as there are still tiles in the positionQueue with unchecked neighbours
+        wavefrontAlgorithm:
         while (!positionQueue.isEmpty()) {
             // Reads a position and saved distance from the position_queue according to the First-In-First-Out principle
             int[] position = positionQueue.removeFirst();
             int rowIndex = position[0];
             int columnIndex = position[1];
             int distance = position[2];
-
-            // If the read position is the goal position its distance is saved as the pathLength and the algorithm stops
-            if ((rowIndex == goalRowIndex) && (columnIndex == goalColumnIndex)) {
-                pathLength = distance;
-                break;
-            }
 
             // For each of the four tiles next to the read position the distance is saved
             for (int[] direction : DIRECTIONS) {
@@ -137,6 +132,12 @@ public class Wavefront {
 
                     // Saves the previous position to each current position to determine the path towards the goal at a later step
                     previousPositions.put(currentRowIndex + "," + currentColumnIndex, rowIndex + "," + columnIndex);
+
+                    // If the read position is the goal position its distance is saved as the pathLength and the algorithm stops
+                    if ((currentRowIndex == goalRowIndex) && (currentColumnIndex == goalColumnIndex)) {
+                        pathLength = distance + 1;
+                        break wavefrontAlgorithm;
+                    }
                 }
             }
         }
