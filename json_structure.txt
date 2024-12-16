@@ -18,6 +18,6 @@
     ],
     ...
   ],
-  "computing_time": float (seconds),
+  "computing_time": float (milliseconds),
   "memory_usage": float (MB)
 }

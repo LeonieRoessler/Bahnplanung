@@ -173,8 +173,8 @@ public class Wavefront {
             }
         }
 
-        // The computingTime in seconds is calculated by subtracting the startTime
-        double computingTime = (double)(endTime - startTime)/1_000_000_000.0;
+        // The computingTime in milliseconds is calculated by subtracting the startTime
+        double computingTime = (double)(endTime - startTime)/1_000_000.0;
 
         // The memory usage gets converted to MB
         double memoryUsage = (double)(memoryAfter - memoryBefore) / 1_048_576.0;
