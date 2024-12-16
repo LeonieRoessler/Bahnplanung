@@ -50,8 +50,8 @@ def wavefront(map, algorithm_map, start_position, goal_position, status_code):
         return algorithm_map, status_code, -1, [], 0.0, 0.0
 
     # Saves the start_time and the observation of the memory usage is started
-    start_time = time.perf_counter()
     tracemalloc.start()
+    start_time = time.perf_counter()
 
     # Initializes all the components needed for the Wavefront-algorithm
     directions = [(-1, 0), (1, 0), (0, -1), (0, 1)]
@@ -99,12 +99,14 @@ def wavefront(map, algorithm_map, start_position, goal_position, status_code):
         # Reconstruct the Wavefront-algorithms path
         path_positions = reconstruct_path(start_position, goal_position, previous_positions)
 
+    # The end_time gets saved
+    end_time = time.perf_counter()
+
     # The memory usage gets saved and the tracking is stopped
     _, peak = tracemalloc.get_traced_memory()
     tracemalloc.stop()
 
-    # The end_time gets saved and the computing_time in seconds is calculated by subtracting the start_time
-    end_time = time.perf_counter()
+    # The computing_time in seconds is calculated by subtracting the start_time
     computing_time = end_time - start_time
 
     # The memory usage gets converted to MB

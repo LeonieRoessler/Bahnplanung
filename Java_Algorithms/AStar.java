@@ -123,7 +123,6 @@ public class AStar {
         }
 
         // Saves the startTime and starts the observation of the memory usage
-        long startTime = System.nanoTime();
         long memoryBefore = 0;
 
         for (MemoryPoolMXBean memoryPool : ManagementFactory.getMemoryPoolMXBeans()) {
@@ -132,6 +131,8 @@ public class AStar {
                 memoryBefore = memoryBefore + usedMemory;
             }
         }
+
+        long startTime = System.nanoTime();
 
         // Returns error code, if wrong heuristic_type argument was given
         if (!(heuristicType.equalsIgnoreCase(AStarHeuristicType.MANHATTAN_DISTANCE.getValue())|| heuristicType.equalsIgnoreCase(AStarHeuristicType.AIRPLANE_DISTANCE.getValue()))) {
@@ -209,6 +210,9 @@ public class AStar {
                 pathPositions = pathReconstructor.reconstructPath();
             }
 
+            // The endTime gets saved
+            long endTime = System.nanoTime();
+
             // The tracking of the memory usage is stopped
             long memoryAfter = 0;
 
@@ -219,8 +223,7 @@ public class AStar {
                 }
             }
 
-            // The endTime gets saved and the computingTime in seconds is calculated by subtracting the startTime
-            long endTime = System.nanoTime();
+            // The computingTime in seconds is calculated by subtracting the startTime
             double computingTime = (double)(endTime - startTime)/1_000_000_000.0;
 
             // The memory usage gets converted to MB
