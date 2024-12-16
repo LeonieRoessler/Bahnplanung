@@ -125,7 +125,18 @@ def main():
             if not os.path.isfile(f"{folder}/{script_name}"):
                 print(f"Fehler: Die Datei {folder}/{script_name} wurde nicht gefunden.")
                 continue
-            command = f"./{folder}/{script_name} {input_map} result_{name}_Cpp.json"
+            #compile_command = f"g++ -o {folder} {script_name} -I.{folder}/include"
+            compile_command = f"g++ -o {folder}\\{script_name}.exe {folder}\\{script_name}.cpp -I{folder}\\include"
+            exe_path = os.path.abspath(f"{folder}\\{name}.exe")
+            # Versuche, das C++-Programm zu kompilieren
+            try:
+                print(f"Kompliliere das Programm: {compile_command}")
+                subprocess.run(compile_command, shell=True, check=True)  # check=True sorgt für eine Ausnahme bei Fehlern
+                print("Kompilierung erfolgreich!")
+            except subprocess.CalledProcessError as e:
+                print(f"Fehler beim Kompilieren: {e}")
+                return
+            command = f"{folder}\\{script_name}.exe {input_map} result_{name}_Cpp.json"
         else:
             print(f"Unbekannte Sprache: {language}")
             continue
