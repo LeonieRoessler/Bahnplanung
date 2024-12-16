@@ -38,14 +38,16 @@ def main():
     for alg in algorithms:
         name, language = alg.split(":")  # Trenne den Namen von der Sprache
         print(f"Algorithmus: {name}, Sprache: {language}")
-        
+        attribute = "none"
         # Befehl basierend auf dem Algorithmus und der Sprache
         if name == "Wavefront":
             script_name = "Wavefront"
-        elif name == "Bushfire":
-            script_name = "Bushfire"
-        elif name == "AStar":
-            script_name = "A_star"
+        elif name == "Brushfire":
+            script_name = "Brushfire"
+        elif name == "AStarAP":
+            script_name = "AStarAP"
+        elif name == "AStarMH":
+            script_name = "AStarMH"
         else:
             print(f"Unbekannter Algorithmus: {name}")
             continue
@@ -53,13 +55,33 @@ def main():
         # Bestimme den Pfad und den Befehl basierend auf der Sprache
         if language == "Python":
             folder = "Python_Algorithms"
-            # Prüfe, ob der Ordner und die Datei existieren
+            # Pruefe, ob der Ordner und die Datei existieren
+            if name == "AStarAP":
+                script_name = "A_star"
+                attribute = "manhattan"
+            elif name == "AStarMH":
+                script_name = "A_star"
+                attribute = "airplane"
             if not os.path.isfile(f"{folder}/{script_name}.py"):
                 print(f"Fehler: Die Datei {folder}/{script_name}.py wurde nicht gefunden.")
                 continue
-            command = f"python3 {folder}/{script_name}.py {input_map} result_{name}_Python.json"
+            if attribute != "none":
+                command = f"python3 {folder}/{script_name}.py {input_map} result_{name}_Python.json {attribute}"
+            else:
+                command = f"python3 {folder}/{script_name}.py {input_map} result_{name}_Python.json"
+
         elif language == "Java":
             folder = "Java_Algorithms"
+            if name == "Wavefront":
+                script_name = "WavefrontMain"
+            elif name == "Brushfire":
+                script_name = "BrushfireMain"
+            elif name == "AStarAP":
+                script_name = "AStarMain"
+                attribute = "manhattan"
+            elif name == "AStarMH":
+                script_name = "AStarMain"
+                attribute = "airplane"
             
             # Finde alle .java-Dateien im Ordner
             java_files = [f for f in os.listdir(folder) if f.endswith('.java')]
@@ -69,7 +91,7 @@ def main():
                 continue
             
             # Kompiliere alle .java-Dateien
-            compile_command = f"javac {folder}/*.java"
+            compile_command = f"javac -cp {folder}/lib/gson-2.11.0.jar -d {folder} {folder}/*.java && echo 'Compiled Successfully'"
             compile_process = subprocess.run(compile_command, shell=True)
             
             if compile_process.returncode != 0:
@@ -86,9 +108,11 @@ def main():
                     continue
             
             # Führe das kompilierte Java-Programm aus
-            class_name = script_name  # Der Name der Klasse, die du ausführen möchtest
-            input_map = "some_input_map"  # Beispiel für Input-Map
-            command = f"java -cp {folder} {class_name} {input_map} result_{name}_Java.json"
+            class_name = script_name 
+            if attribute != "none":
+                command = f"java -cp {folder};{folder}/lib/gson-2.11.0.jar {class_name} {input_map} result_{name}_Java.json {attribute}"
+            else:
+                command = f"java -cp {folder};{folder}/lib/gson-2.11.0.jar {class_name} {input_map} result_{name}_Java.json"
             run_process = subprocess.run(command, shell=True)
             
             if run_process.returncode != 0:

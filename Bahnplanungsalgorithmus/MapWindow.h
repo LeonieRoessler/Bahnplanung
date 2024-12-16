@@ -55,14 +55,14 @@ private:
     sf::Text buttonText;
 
     // Labels für die Algorithmen
-    sf::Text alg_label[3] = {};
+    sf::Text alg_label[4] = {};
 
     // Labels für Programmiersprachen
     sf::Text lang_label[3] = {};
 
     // Checkboxen für Auswahl
-    sf::RectangleShape checkbox[9];  // Array für 9 Checkboxen
-    bool checkboxState[9] = {false};           // Zustand der Checkboxen
+    sf::RectangleShape checkbox[12];  // Array für 12 Checkboxen
+    bool checkboxState[12] = {false};           // Zustand der Checkboxen
 };
 
 

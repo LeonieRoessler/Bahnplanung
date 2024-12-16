@@ -4,7 +4,7 @@
 ResultsWindow::ResultsWindow(Map& originalMap, const std::vector<Algorithm>& algorithms, vector<ParseJson>& parsedResults)
     : map(originalMap), algorithms(algorithms), parsedResults(parsedResults), button(sf::Vector2f(100, 30)), buttonText("Close", font, 20) {
     // Fenster initialisieren
-    window.create(sf::VideoMode(2000, 1000), "Results");
+    window.create(sf::VideoMode(2200, 1200), "Results");
 
     // Schriftart laden
     if (!font.loadFromFile("assets/arial.ttf")) {
@@ -23,13 +23,13 @@ ResultsWindow::ResultsWindow(Map& originalMap, const std::vector<Algorithm>& alg
 
     // Button initialisieren
     button.setFillColor(sf::Color::Blue);
-    button.setPosition(250, 630);
+    button.setPosition(map.getWidth()*5, map.getHeight() * 10 + 20);
     button.setOutlineThickness(2);
     button.setOutlineColor(sf::Color::White);
 
     // Text für den Button
     buttonText.setFillColor(sf::Color::White);
-    buttonText.setPosition(265, 635); // Zentriert auf dem Button
+    buttonText.setPosition(map.getWidth() * 5+3, map.getHeight() * 10 + 25); // Zentriert auf dem Button
 }
 
 // Hauptschleife für das Fenster
@@ -49,13 +49,15 @@ void ResultsWindow::close() {
 
 void ResultsWindow::draw() {
     window.clear(sf::Color(169, 169, 169));
+    int xOffset = map.getWidth()*10 + 5; // Startposition für die Darstellung der Karten und Ergebnisse
 
-    int xOffset = 500; // Startposition für die Darstellung der Karten und Ergebnisse
+    tileSize = 10;
+    drawMap(map, 0, 50);
     if (map.getWidth() > 12) {
         tileSize = 25;
     }
-
-    drawMap(map, 0, 50);
+    else
+        tileSize = 40;
 
    /* for (const auto& parsedResult : parsedResults) {
         // Algorithmus-Name und Sprache
@@ -86,9 +88,9 @@ void ResultsWindow::draw() {
         string algorithmName = entry.first;
         int mapWidth = 0;
         drawText("Algorithm: " + algorithmName, xOffset, 20);
-       
+        int yOffset = 10;
         for (const auto& result : entry.second) {
-            int yOffset = 10;
+            
             string language = result->getLanguage();
             float computingTime = result->getComputingTime();
             float memoryUsage = result->getMemoryUsage();
@@ -96,13 +98,18 @@ void ResultsWindow::draw() {
             drawPath(map, result->getPath(), xOffset, 50);
             drawNumbers(result->getAlgorithmMap(), xOffset, 50);
             mapWidth = result->getAlgorithmMap().getWidth();
-            string info = language + ":   Computing Time: " + to_string(computingTime) + "ms, " + "Memory Usage: " + to_string(memoryUsage) + "MB";
-            drawText(info, xOffset, 100 + result->getAlgorithmMap().getHeight() * 50 + yOffset);
-            info = "               Memory Usage: " + to_string(memoryUsage) + "MB "+ "Path Length: " + to_string(pathLength);
-            drawText(info, xOffset, 100 + result->getAlgorithmMap().getHeight() * 50 + yOffset + 20);
-            yOffset+=40;
+            string info = language + ": ";
+            drawText(info, xOffset, 100 + result->getAlgorithmMap().getHeight() * tileSize + yOffset );
+            info = "Computing Time: " + to_string(computingTime) + "ms";
+            drawText(info, xOffset, 100 + result->getAlgorithmMap().getHeight() * tileSize + yOffset + 20);
+            info = "Memory Usage: " + to_string(memoryUsage) + "MB";
+            drawText(info, xOffset, 100 + result->getAlgorithmMap().getHeight() * tileSize + yOffset + 40);
+            info = "Path Length: " + to_string(pathLength);
+            drawText(info, xOffset, 100 + result->getAlgorithmMap().getHeight() * tileSize + yOffset + 60);
+
+            yOffset+=100;
         }
-        xOffset += mapWidth * 50 ;
+        xOffset += mapWidth * tileSize - tileSize;
     }
 
 
@@ -244,6 +251,21 @@ void ResultsWindow::onButtonClick() {
 }
 
 void ResultsWindow::handleEvents() {
+    sf::Event event;
+    while (window.pollEvent(event)) {
+        if (event.type == sf::Event::Closed) {
+            window.close();
+        }
 
+        // Mausereignis: Linksklick
+        if (event.type == sf::Event::MouseButtonPressed && event.mouseButton.button == sf::Mouse::Left) {
+            sf::Vector2i mousePos = sf::Mouse::getPosition(window);
 
+            // Prüfe, ob der Button angeklickt wurde
+            if (button.getGlobalBounds().contains(mousePos.x, mousePos.y)) {
+                onButtonClick();
+            }
+        }
+
+    }
 }

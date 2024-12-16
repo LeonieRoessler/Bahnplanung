@@ -7,7 +7,7 @@
 
 int main() {
     // Karte erstellen
-    Map map(11, 11);
+    Map map(21, 21);
     map.addFrame();
     vector<Algorithm> algorithms;
     vector<ParseJson> parsedResults;
@@ -32,6 +32,7 @@ int main() {
         else {
             //Error
         }
+        filename = "result";
     }
     
     ResultsWindow resultsWindow(map, algorithms, parsedResults);

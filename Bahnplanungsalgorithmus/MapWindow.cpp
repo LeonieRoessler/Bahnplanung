@@ -20,13 +20,13 @@ MapWindow::MapWindow(Map& map, vector<Algorithm>& algorithms) : map(map), button
 
     // Button initialisieren
     button.setFillColor(sf::Color::Blue);
-    button.setPosition(250, 630);
+    button.setPosition(map.getWidth()* 50 + 10, map.getHeight() * 20);
     button.setOutlineThickness(2);
     button.setOutlineColor(sf::Color::White);
 
     // Text für den Button
     buttonText.setFillColor(sf::Color::White);
-    buttonText.setPosition(265, 635); // Zentriert auf dem Button
+    buttonText.setPosition(map.getWidth() * 50 + 20, map.getHeight() * 20 ); // Zentriert auf dem Button
 }
 
 // Läuft die Hauptschleife für das Fenster
@@ -110,7 +110,7 @@ void MapWindow::handleEvents() {
             }
 
             // Prüfe, ob eine Checkbox angeklickt wurde
-            for (int i = 0; i < 9; ++i) {
+            for (int i = 0; i < 12; ++i) {
                 if (checkbox[i].getGlobalBounds().contains(mousePos.x, mousePos.y)) {
                     checkboxState[i] = !checkboxState[i];
                     checkbox[i].setFillColor(checkboxState[i] ? sf::Color::Green : sf::Color::White);
@@ -194,10 +194,13 @@ void MapWindow::createAlgorithms(int i) {
         name = "Wavefront";
     }
     else if (i / 3 == 1) {
-        name = "Bushfire";
+        name = "Brushfire";
     }
     else if (i / 3 == 2) {
-        name = "AStar";
+        name = "AStarAP";
+    }
+    else if (i / 3 == 3) {
+        name = "AStarMH";
     }
     if (i % 3 == 0) {
         language = "Java";
@@ -226,7 +229,7 @@ void MapWindow::onButtonClick() {
     }
 
     //check checkbox State
-    for (int i = 0; i < 9; i++) {
+    for (int i = 0; i < 12; i++) {
         if (checkboxState[i] == true) {
             createAlgorithms(i);
         }
@@ -255,12 +258,14 @@ void MapWindow::onButtonClick() {
 
 // Zeichnet die Checkboxen
 void MapWindow::drawCheckboxes() {
-    for (int i = 0; i < 9; ++i) {
+    for (int i = 0; i < 12; ++i) {
         window.draw(checkbox[i]);
     }
     for (int i = 0; i < 3; ++i) {
-        window.draw(alg_label[i]);
         window.draw(lang_label[i]);
+    }
+    for (int i = 0; i < 4; ++i) {
+        window.draw(alg_label[i]);
     }
 }
 
@@ -268,26 +273,30 @@ void MapWindow::initCheckboxes() {
     //Labels erstellen
     int xStart = map.getWidth() * 60 + 50;
 
-    for (int i = 0; i < 3; i++) {
+    for (int i = 0; i < 4; i++) {
         alg_label[i].setFont(font);
         alg_label[i].setCharacterSize(18);
         alg_label[i].setFillColor(sf::Color::Black);
         alg_label[i].setPosition(xStart, 95 + i * 40);
+    }
+    for (int i = 0; i < 3; i++) {
         lang_label[i].setFont(font);
         lang_label[i].setCharacterSize(18);
         lang_label[i].setFillColor(sf::Color::Black);
         lang_label[i].setPosition(xStart + 30 + i * 60, 70);
     }
 
+
     alg_label[0].setString("wf");
     alg_label[1].setString("bf");
-    alg_label[2].setString("a*");
+    alg_label[2].setString("a* ap");
+    alg_label[3].setString("a* mh");
     lang_label[0].setString("Java");
     lang_label[1].setString("Pyth");
     lang_label[2].setString("Cpp");
 
     // Checkboxen erstellen
-    for (int i = 0; i < 9; ++i) {
+    for (int i = 0; i < 12; ++i) {
         checkbox[i].setSize(sf::Vector2f(20, 20));
         checkbox[i].setFillColor(sf::Color::White);
         checkbox[i].setOutlineThickness(2);
@@ -295,7 +304,7 @@ void MapWindow::initCheckboxes() {
         checkboxState[i] = false;
     }
     // Position der Checkboxen
-    for (int i = 0; i < 3; ++i) {
+    for (int i = 0; i < 4; ++i) {
         for (int j = 0; j < 3; ++j) {
             checkbox[i * 3 + j].setPosition(xStart + 40 + j * 60, 100 + i * 40);  // 3x3 Raster
         }

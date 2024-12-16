@@ -1,12 +1,58 @@
-public class AlgorithmResult {
-    private int[][] algorithmMap;
-    private int statusCode;
-    private int pathLength;
-    private int[][] pathPositions;
-    private float computingTime;
-    private float memoryUsage;
+import com.google.gson.annotations.SerializedName;
 
-    public AlgorithmResult(int[][] algorithmMap, int statusCode, int pathLength, int[][] pathPositions, float computingTime, float memoryUsage) {
+import java.math.BigDecimal;
+import java.math.RoundingMode;
+
+/**
+ * AlgorithmResult is the class that represents the result after applying a path planning algorithm
+ */
+public class AlgorithmResult {
+    /**
+     * The map created by the path planning algorithm filled with the values determined by the algorithm
+     */
+    @SerializedName("algorithm_map")
+    private final int[][] algorithmMap;
+
+    /**
+     * The status code returned by the path planning algorithm symbolizing success or a specific error type
+     */
+    @SerializedName("status_code")
+    private final int statusCode;
+
+    /**
+     * The shortest path length determined by the algorithm in the form of tiles towards the goal
+     */
+    @SerializedName("path_length")
+    private final int pathLength;
+
+    /**
+     * The positions of the path from start to goal
+     */
+    @SerializedName("path")
+    private final int[][] pathPositions;
+
+    /**
+     * The time the algorithm needed to finish in seconds
+     */
+    @SerializedName("computing_time")
+    private final BigDecimal computingTime;
+
+    /**
+     * The used memory in MB
+     */
+    @SerializedName("memory_usage")
+    private final double memoryUsage;
+
+    /**
+     * Constructor of the AlgorithmResult class
+     * @param algorithmMap The map created by the path planning algorithm filled with the values determined by the algorithm
+     * @param statusCode The status code returned by the path planning algorithm symbolizing success or a specific error type
+     * @param pathLength The shortest path length determined by the algorithm in the form of tiles towards the goal
+     * @param pathPositions The positions of the path from start to goal
+     * @param computingTime The time the algorithm needed to finish in seconds
+     * @param memoryUsage The used memory in MB
+     */
+    public AlgorithmResult(int[][] algorithmMap, int statusCode, int pathLength, int[][] pathPositions, BigDecimal computingTime, double memoryUsage) {
         this.algorithmMap = algorithmMap;
         this.statusCode = statusCode;
         this.pathLength = pathLength;
@@ -15,74 +61,21 @@ public class AlgorithmResult {
         this.memoryUsage = memoryUsage;
     }
 
-    public String algorithmMapToString() {
-        String indent = "   ";
-        StringBuilder formattedAlgorithmMap = new StringBuilder();
-        formattedAlgorithmMap.append("[\n");
-        for (int row_index = 0; row_index < algorithmMap.length; row_index++) {
-            formattedAlgorithmMap.append(indent).append("[\n");
-            for (int column_index = 0; column_index < algorithmMap.length; column_index++) {
-                formattedAlgorithmMap.append(indent).append(indent).append(algorithmMap[row_index][column_index]);
-                if (column_index < algorithmMap[row_index].length - 1) {
-                    formattedAlgorithmMap.append(",");
-                }
-                formattedAlgorithmMap.append("\n");
-            }
-            formattedAlgorithmMap.append(indent).append("]");
-            if (row_index < algorithmMap.length - 1) {
-                formattedAlgorithmMap.append(",");
-            }
-            formattedAlgorithmMap.append("\n");
-        }
-        formattedAlgorithmMap.append("]");
-        return formattedAlgorithmMap.toString();
-    }
-
-    public int[][] getAlgorithmMap() {
-        return algorithmMap;
-    }
-
-    public void setAlgorithmMap(int[][] algorithmMap) {
+    /**
+     * Constructor of the AlgorithmResult class
+     * @param algorithmMap The map created by the path planning algorithm filled with the values determined by the algorithm
+     * @param statusCode The status code returned by the path planning algorithm symbolizing success or a specific error type
+     * @param pathLength The shortest path length determined by the algorithm in the form of tiles towards the goal
+     * @param pathPositions The positions of the path from start to goal
+     * @param computingTime The time the algorithm needed to finish in seconds
+     * @param memoryUsage The used memory in MB
+     */
+    public AlgorithmResult(int[][] algorithmMap, int statusCode, int pathLength, int[][] pathPositions, double computingTime, double memoryUsage) {
         this.algorithmMap = algorithmMap;
-    }
-
-    public int getStatusCode() {
-        return statusCode;
-    }
-
-    public void setStatusCode(int statusCode) {
         this.statusCode = statusCode;
-    }
-
-    public int getPathLength() {
-        return pathLength;
-    }
-
-    public void setPathLength(int pathLength) {
         this.pathLength = pathLength;
-    }
-
-    public int[][] getPathPositions() {
-        return pathPositions;
-    }
-
-    public void setPathPositions(int[][] pathPositions) {
         this.pathPositions = pathPositions;
-    }
-
-    public float getComputingTime() {
-        return computingTime;
-    }
-
-    public void setComputingTime(float computingTime) {
-        this.computingTime = computingTime;
-    }
-
-    public float getMemoryUsage() {
-        return memoryUsage;
-    }
-
-    public void setMemoryUsage(float memoryUsage) {
+        this.computingTime = new BigDecimal(computingTime).setScale(19, RoundingMode.HALF_UP);
         this.memoryUsage = memoryUsage;
     }
 }
