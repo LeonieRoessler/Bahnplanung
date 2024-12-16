@@ -85,8 +85,8 @@ def brushfire(map, algorithm_map, status_code):
     _, peak = tracemalloc.get_traced_memory()
     tracemalloc.stop()
 
-    # The computing_time in seconds is calculated by subtracting the start_time
-    computing_time = end_time - start_time
+    # The computing_time in milliseconds is calculated by subtracting the start_time
+    computing_time = (end_time - start_time)/1_000_000
 
     # The memory usage gets converted to MB
     memory_usage = peak / 10**6
