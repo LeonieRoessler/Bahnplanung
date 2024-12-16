@@ -46,7 +46,7 @@ def brushfire(map, algorithm_map, status_code):
         return algorithm_map, status_code, -1, [], 0.0, 0.0
 
     # Saves the start_time and the observation of the memory usage is started
-    start_time = time.perf_counter()
+    start_time = time.perf_counter_ns()
     tracemalloc.start()
 
     # Initializes all the components needed for the Brushfire-algorithm
@@ -79,7 +79,7 @@ def brushfire(map, algorithm_map, status_code):
                 position_queue.append((current_row_index, current_column_index, distance + 1))
 
     # The end_time gets saved
-    end_time = time.perf_counter()
+    end_time = time.perf_counter_ns()
 
     # The memory usage gets saved and the tracking is stopped
     _, peak = tracemalloc.get_traced_memory()

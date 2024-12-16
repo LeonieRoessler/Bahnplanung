@@ -87,7 +87,7 @@ def a_star(map, algorithm_map, start_position, goal_position, heuristic_type, st
         return algorithm_map, status_code, -1, [], 0.0, 0.0
 
     # Saves the start_time and the observation of the memory usage is started
-    start_time = time.perf_counter()
+    start_time = time.perf_counter_ns()
     tracemalloc.start()
 
     # Selects the heuristic function based on the heuristic_type argument
@@ -152,7 +152,7 @@ def a_star(map, algorithm_map, start_position, goal_position, heuristic_type, st
         path_positions = reconstruct_path(start_position, goal_position, previous_positions)
 
     # The end_time gets saved
-    end_time = time.perf_counter()
+    end_time = time.perf_counter_ns()
 
     # The memory usage gets saved and the tracking is stopped
     _, peak = tracemalloc.get_traced_memory()
