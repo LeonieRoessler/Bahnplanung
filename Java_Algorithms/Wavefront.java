@@ -1,6 +1,10 @@
+import java.lang.management.MemoryPoolMXBean;
 import java.util.ArrayDeque;
 import java.util.Deque;
 import java.util.HashMap;
+import java.lang.management.ManagementFactory;
+import java.lang.management.MemoryMXBean;
+import java.lang.management.MemoryUsage;
 
 /**
  * Wavefront is the class that applies the Wavefront-algorithm
@@ -93,12 +97,16 @@ public class Wavefront {
             return new AlgorithmResult(algorithmMap, statusCode, -1, new int[][]{}, 0, 0);
         }
 
-        // Calls Garbage Collector to clean memory
-        System.gc();
-
         // Saves the startTime and starts the observation of the memory usage
         long startTime = System.nanoTime();
-        long memoryBefore = Runtime.getRuntime().totalMemory() - Runtime.getRuntime().freeMemory();
+        long memoryBefore = 0;
+
+        for (MemoryPoolMXBean memoryPool : ManagementFactory.getMemoryPoolMXBeans()) {
+            long usedMemory = memoryPool.getUsage().getUsed();
+            if (usedMemory > 0) {
+                memoryBefore = memoryBefore + usedMemory;
+            }
+        }
 
         // Initializes all the components needed for the Wavefront-algorithm
         Deque<int[]> positionQueue = new ArrayDeque<>();
@@ -152,7 +160,14 @@ public class Wavefront {
         }
 
         // The tracking of the memory usage is stopped
-        long memoryAfter = Runtime.getRuntime().totalMemory() - Runtime.getRuntime().freeMemory();
+        long memoryAfter = 0;
+
+        for (MemoryPoolMXBean memoryPool : ManagementFactory.getMemoryPoolMXBeans()) {
+            long usedMemory = memoryPool.getUsage().getUsed();
+            if (usedMemory > 0) {
+                memoryAfter = memoryAfter + usedMemory;
+            }
+        }
 
         // The endTime gets saved and the computingTime in seconds is calculated by subtracting the startTime
         long endTime = System.nanoTime();

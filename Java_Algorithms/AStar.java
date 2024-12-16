@@ -1,3 +1,5 @@
+import java.lang.management.ManagementFactory;
+import java.lang.management.MemoryPoolMXBean;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.PriorityQueue;
@@ -120,12 +122,16 @@ public class AStar {
             return new AlgorithmResult(algorithmMap, statusCode, -1, new int[][]{}, 0, 0);
         }
 
-        // Calls Garbage Collector to clean memory
-        System.gc();
-
         // Saves the startTime and starts the observation of the memory usage
         long startTime = System.nanoTime();
-        long memoryBefore = Runtime.getRuntime().totalMemory() - Runtime.getRuntime().freeMemory();
+        long memoryBefore = 0;
+
+        for (MemoryPoolMXBean memoryPool : ManagementFactory.getMemoryPoolMXBeans()) {
+            long usedMemory = memoryPool.getUsage().getUsed();
+            if (usedMemory > 0) {
+                memoryBefore = memoryBefore + usedMemory;
+            }
+        }
 
         // Returns error code, if wrong heuristic_type argument was given
         if (!(heuristicType.equalsIgnoreCase(AStarHeuristicType.MANHATTAN_DISTANCE.getValue())|| heuristicType.equalsIgnoreCase(AStarHeuristicType.AIRPLANE_DISTANCE.getValue()))) {
@@ -204,7 +210,14 @@ public class AStar {
             }
 
             // The tracking of the memory usage is stopped
-            long memoryAfter = Runtime.getRuntime().totalMemory() - Runtime.getRuntime().freeMemory();
+            long memoryAfter = 0;
+
+            for (MemoryPoolMXBean memoryPool : ManagementFactory.getMemoryPoolMXBeans()) {
+                long usedMemory = memoryPool.getUsage().getUsed();
+                if (usedMemory > 0) {
+                    memoryAfter = memoryAfter + usedMemory;
+                }
+            }
 
             // The endTime gets saved and the computingTime in seconds is calculated by subtracting the startTime
             long endTime = System.nanoTime();
