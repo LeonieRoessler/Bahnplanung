@@ -133,7 +133,7 @@ int main(int argc, char* argv[]) {
     brushfire(matrix, startX, startY, visited);
 
     auto endTime = chrono::high_resolution_clock::now();
-    auto duration = chrono::duration_cast<chrono::milliseconds>(endTime - startTime);
+    auto duration = chrono::duration_cast<chrono::nanoseconds>(endTime - startTime);
 
     cout << "Brushfire-Algorithmus abgeschlossen." << endl;
     cout << "Berechnungszeit: " << duration.count() << " ms" << endl;

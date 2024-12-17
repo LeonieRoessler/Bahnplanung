@@ -213,7 +213,7 @@ int main(int argc, char* argv[]) {
 
     // Zeitmessung beenden
     auto endTime = chrono::high_resolution_clock::now();
-    auto duration = chrono::duration_cast<chrono::milliseconds>(endTime - startTime);
+    auto duration = chrono::duration_cast<chrono::nanoseconds>(endTime - startTime);
 
     // Ergebnis ausgeben
     if (distanceToGoal != -1) {
@@ -228,19 +228,6 @@ int main(int argc, char* argv[]) {
 
     // Status Code (0 für erfolgreich, -1 für nicht erreichbar)
     int statusCode = (distanceToGoal != -1) ? 0 : -1;
-
-    // Benötigte Zeit und Speicher (ungefährer Speicherverbrauch, hier als Platzhalter)
-    cout << "Berechnungszeit: " << duration.count() << " ms" << endl;
-    cout << "Status Code: " << statusCode << endl;
-
-    // Matrix mit den abgelaufenen Feldern (Visited)
-    cout << "Matrix mit den abgelaufenen Feldern: " << endl;
-    for (int i = 0; i < rows; i++) {
-        for (int j = 0; j < cols; j++) {
-            cout << visited[i][j] << " ";
-        }
-        cout << endl;
-    }
 
     float memoryAfter = getMemoryUsage();
     float memoryUsage = memoryAfter - memoryBefore;

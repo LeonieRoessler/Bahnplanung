@@ -4,7 +4,7 @@
 ResultsWindow::ResultsWindow(Map& originalMap, const std::vector<Algorithm>& algorithms, vector<ParseJson>& parsedResults)
     : map(originalMap), algorithms(algorithms), parsedResults(parsedResults), button(sf::Vector2f(100, 30)), buttonText("Close", font, 20) {
     // Fenster initialisieren
-    window.create(sf::VideoMode(1000, 900), "Results");
+    window.create(sf::VideoMode(1800, 900), "Results");
 
     // Schriftart laden
     if (!font.loadFromFile("assets/arial.ttf")) {
@@ -99,8 +99,12 @@ void ResultsWindow::draw() {
             drawNumbers(result->getAlgorithmMap(), xOffset, 50);
             mapWidth = result->getAlgorithmMap().getWidth();
             string info = language + ": ";
-            drawText(info, xOffset, 100 + result->getAlgorithmMap().getHeight() * tileSize + yOffset );
-            info = "Computing Time: " + to_string(computingTime) + "ms";
+            drawText(info, xOffset, 100 + result->getAlgorithmMap().getHeight() * tileSize + yOffset);
+            if (language == "Cpp") {
+                info = "Computing Time: " + to_string(computingTime) + "ns";
+            }
+            else
+                info = "Computing Time: " + to_string(computingTime) + "ms";
             drawText(info, xOffset, 100 + result->getAlgorithmMap().getHeight() * tileSize + yOffset + 20);
             info = "Memory Usage: " + to_string(memoryUsage) + "MB";
             drawText(info, xOffset, 100 + result->getAlgorithmMap().getHeight() * tileSize + yOffset + 40);

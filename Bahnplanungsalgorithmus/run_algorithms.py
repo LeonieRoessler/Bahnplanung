@@ -121,11 +121,18 @@ def main():
                 print(f"Das Java-Programm {class_name} wurde erfolgreich ausgeführt.")
         elif language == "Cpp":
             folder = "Cpp_Algorithms"
+            if name == "AStarAP":
+                script_name = "A_Star"
+                attribute = "manhattan"
+            elif name == "AStarMH":
+                script_name = "A_Star"
+                attribute = "airplane"
+
             # Prüfe, ob die ausführbare Datei existiert
-            if not os.path.isfile(f"{folder}/{script_name}"):
-                print(f"Fehler: Die Datei {folder}/{script_name} wurde nicht gefunden.")
+            if not os.path.isfile(f"{folder}/{script_name}.cpp"):
+                print(f"Fehler: Die Datei {folder}/{script_name}.cpp wurde nicht gefunden.")
                 continue
-            #compile_command = f"g++ -o {folder} {script_name} -I.{folder}/include"
+            
             compile_command = f"g++ -o {folder}\\{script_name}.exe {folder}\\{script_name}.cpp -I{folder}\\include"
             exe_path = os.path.abspath(f"{folder}\\{name}.exe")
             # Versuche, das C++-Programm zu kompilieren
@@ -136,7 +143,10 @@ def main():
             except subprocess.CalledProcessError as e:
                 print(f"Fehler beim Kompilieren: {e}")
                 return
-            command = f"{folder}\\{script_name}.exe {input_map} result_{name}_Cpp.json"
+            if attribute != "none":
+                command = f"{folder}\\{script_name}.exe {input_map} result_{name}_Cpp.json {attribute}"
+            else:
+                command = f"{folder}\\{script_name}.exe {input_map} result_{name}_Cpp.json"
         else:
             print(f"Unbekannte Sprache: {language}")
             continue

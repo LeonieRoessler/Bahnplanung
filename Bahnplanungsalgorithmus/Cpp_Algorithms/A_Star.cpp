@@ -91,7 +91,8 @@ pair<int, vector<pair<int, int>>> aStar(vector<vector<int>>& matrix, int startX,
             return abs(x - goalX) + abs(y - goalY);
         }
         else if (heuristic == "airplane") {
-            return sqrt(pow(x - goalX, 2) + pow(y - goalY, 2));
+            int ret = sqrt(pow(x - goalX, 2) + pow(y - goalY, 2));
+            return ret;
         }
         return 0;
         };
@@ -199,8 +200,8 @@ int main(int argc, char* argv[]) {
     auto [distanceToGoal, path] = aStar(matrix, startX, startY, goalX, goalY, visited, heuristic);
 
     auto endTime = chrono::high_resolution_clock::now();
-    auto duration = chrono::duration_cast<chrono::milliseconds>(endTime - startTime);
-
+    auto duration = chrono::duration_cast<chrono::nanoseconds>(endTime - startTime);
+   
     int statusCode = (distanceToGoal != -1) ? 0 : -1;
 
     float memoryAfter = getMemoryUsage();
