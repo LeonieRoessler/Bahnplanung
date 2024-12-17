@@ -215,17 +215,6 @@ int main(int argc, char* argv[]) {
     auto endTime = chrono::high_resolution_clock::now();
     auto duration = chrono::duration_cast<chrono::nanoseconds>(endTime - startTime);
 
-    // Ergebnis ausgeben
-    if (distanceToGoal != -1) {
-        for (const auto& p : path) {
-            cout << "(" << p.first << "," << p.second << ") ";
-        }
-        cout << endl;
-    }
-    else {
-        cout << "Das Ziel ist vom Start aus nicht erreichbar." << endl;
-    }
-
     // Status Code (0 für erfolgreich, -1 für nicht erreichbar)
     int statusCode = (distanceToGoal != -1) ? 0 : -1;
 
