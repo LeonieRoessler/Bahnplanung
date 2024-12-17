@@ -228,9 +228,10 @@ int main(int argc, char* argv[]) {
 
     float memoryAfter = getMemoryUsage();
     float memoryUsage = memoryAfter - memoryBefore;
+    double timeInMs = duration.count() / 1000000.0;
 
     // Speichern der Ergebnisse
-    saveResultsToJson(visited, statusCode, distanceToGoal, path, duration.count(), memoryUsage, result_name);
+    saveResultsToJson(visited, statusCode, distanceToGoal, path, timeInMs, memoryUsage, result_name);
 
     return 0;
 }

@@ -129,12 +129,6 @@ int main(int argc, char* argv[]) {
         statusCode = 402;
         return 402;
     }
-    if (goalX == -1) {
-        cout << "Ziel nicht gefunden!" << endl;
-        statusCode = 403;
-        return 403;
-    }
-
     auto startTime = chrono::high_resolution_clock::now();
 
     vector<vector<int>> visited(rows, vector<int>(cols, -1));  // -1 bedeutet "nicht besucht"
@@ -148,8 +142,9 @@ int main(int argc, char* argv[]) {
 
     float memoryAfter = getMemoryUsage();
     float memoryUsage = memoryAfter - memoryBefore;
+    double timeInMs = duration.count() / 1000000.0;
 
-    saveResultsToJson(visited, 0, duration.count(), memoryUsage, result_name);
+    saveResultsToJson(visited, 0, timeInMs, memoryUsage, result_name);
 
     return 0;
 }

@@ -100,11 +100,7 @@ void ResultsWindow::draw() {
             mapWidth = result->getAlgorithmMap().getWidth();
             string info = language + ": ";
             drawText(info, xOffset, 100 + result->getAlgorithmMap().getHeight() * tileSize + yOffset);
-            if (language == "Cpp") {
-                info = "Computing Time: " + to_string(computingTime) + "ns";
-            }
-            else
-                info = "Computing Time: " + to_string(computingTime) + "ms";
+            info = "Computing Time: " + to_string(computingTime) + "ms";
             drawText(info, xOffset, 100 + result->getAlgorithmMap().getHeight() * tileSize + yOffset + 20);
             info = "Memory Usage: " + to_string(memoryUsage) + "MB";
             drawText(info, xOffset, 100 + result->getAlgorithmMap().getHeight() * tileSize + yOffset + 40);
