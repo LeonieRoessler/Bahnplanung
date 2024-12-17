@@ -11,11 +11,7 @@ ResultsWindow::ResultsWindow(Map& originalMap, const std::vector<Algorithm>& alg
         std::cerr << "Fehler beim Laden der Schriftart!" << std::endl;
     }
 
-    // Maps initialisieren
-    /*for (auto& result : parsedResults) {
-        groupedResults[result.algorithm] = &result;
-        resultsByLanguage[result.algorithm][result.language] = &result;
-    }*/
+
 
     for (const auto& result : parsedResults) {
         groupedResults[result.getAlgorithm()].push_back(&result);
@@ -59,29 +55,6 @@ void ResultsWindow::draw() {
     else
         tileSize = 40;
 
-   /* for (const auto& parsedResult : parsedResults) {
-        // Algorithmus-Name und Sprache
-        string algorithmName = parsedResult.getAlgorithm();
-        string language = parsedResult.getLanguage();
-
-        // Algorithmus-Map zeichnen
-        drawPath(map, parsedResult.getPath(), xOffset, 50);
-
-        //drawNumbers(map, parsedResult.getAlgorithmMap(), xOffset, 50);
-
-        // Algorithmus-Name und Sprache anzeigen
-        drawText("Algorithm: " + algorithmName + ", Language: " + language, xOffset, 20);
-
-        // Ergebnisse anzeigen (z. B. Rechenzeit, Speicherverbrauch)
-        std::string info = "Computing Time: " + std::to_string(parsedResult.getComputingTime()) + "ms, " +
-            "Memory Usage: " + std::to_string(parsedResult.getMemoryUsage()) + "MB";
-        drawText(info, xOffset, 100 + parsedResult.getAlgorithmMap().getHeight() * 50 + 10);
-
-        // Versatz für die nächste Darstellung anpassen
-        xOffset += parsedResult.getAlgorithmMap().getWidth() * 50 + 70;
-    }*/
-
-
 
 
     for (const auto& entry : groupedResults) {
@@ -111,43 +84,6 @@ void ResultsWindow::draw() {
         }
         xOffset += mapWidth * tileSize - tileSize;
     }
-
-
-    /*
-    for (const auto& parsedResult : parsedResults) {
-        // Algorithmus-Name und Sprache
-        string algorithmName = parsedResult.getAlgorithm();
-        string language = parsedResult.getLanguage();
-
-        for (auto& result : parsedResults) {
-            if (result.getAlgorithm() == "Bushfire") {
-                language = result.getLanguage();
-                algorithmName = result.getAlgorithm();
-
-                drawText("Algorithm: " + algorithmName + ", Language: " + language, xOffset, 20);
-                // Ergebnisse anzeigen (z. B. Rechenzeit, Speicherverbrauch)
-                std::string info = "Language: " + language + " Computing Time: " + std::to_string(parsedResult.getComputingTime()) + "ms, " +
-                    "Memory Usage: " + std::to_string(parsedResult.getMemoryUsage()) + "MB";
-                drawText(info, xOffset, 100 + parsedResult.getAlgorithmMap().getHeight() * 50 + 10);
-            }
-        }
-
-
-        
-        // Algorithmus-Map zeichnen
-        //drawPath(map, parsedResult.getPath(), xOffset, 50);
-
-        //drawNumbers(map, parsedResult.getAlgorithmMap(), xOffset, 50);
-
-        // Algorithmus-Name und Sprache anzeigen
-        //drawText("Algorithm: " + algorithmName + ", Language: " + language, xOffset, 20);
-
-
-
-        // Versatz für die nächste Darstellung anpassen
-        //xOffset += parsedResult.getAlgorithmMap().getWidth() * 50 + 70;
-    }*/
-
 
 
     // Button zeichnen
