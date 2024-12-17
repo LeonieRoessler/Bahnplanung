@@ -7,14 +7,15 @@
 
 int main() {
     // Karte erstellen
-    Map map(21, 21);
+    Map map(11, 11);
     map.addFrame();
     vector<Algorithm> algorithms;
     vector<ParseJson> parsedResults;
     //ToDo: Rand kann nicht geändert werden (und wird ggf nicht geprinted)
     //DONE: Start/Ziel wird bei erneutem Setzen gelöscht 
 
-
+    map.setTile(3, 5, 2);
+    map.setTile(7, 8, 3);
     // Fenster mit Karte starten
     MapWindow mapWindow(map, algorithms);
     mapWindow.run();

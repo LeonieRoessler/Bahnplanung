@@ -33,7 +33,7 @@ float getMemoryUsage() {
 void saveResultsToJson(const vector<vector<int>>& algorithm_map,
     int status_code, int path_length,
     const vector<pair<int, int>>& path,
-    float computing_time, float memory_usage,
+    double computing_time, float memory_usage,
     const string& result_name) {
 
     // Erstelle ein JSON-Objekt

@@ -4,7 +4,7 @@
 ResultsWindow::ResultsWindow(Map& originalMap, const std::vector<Algorithm>& algorithms, vector<ParseJson>& parsedResults)
     : map(originalMap), algorithms(algorithms), parsedResults(parsedResults), button(sf::Vector2f(100, 30)), buttonText("Close", font, 20) {
     // Fenster initialisieren
-    window.create(sf::VideoMode(2200, 1200), "Results");
+    window.create(sf::VideoMode(1000, 900), "Results");
 
     // Schriftart laden
     if (!font.loadFromFile("assets/arial.ttf")) {
