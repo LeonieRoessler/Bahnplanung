@@ -93,6 +93,7 @@ void brushfire(vector<vector<int>>& matrix, int startX, int startY, vector<vecto
 }
 
 int main(int argc, char* argv[]) {
+    int statusCode;
     if (argc < 3) {
         cerr << "Fehler: Zu wenige Argumente!" << endl;
         return 1;
@@ -104,7 +105,8 @@ int main(int argc, char* argv[]) {
     vector<vector<int>> matrix;
     if (readCsv(matrix, input_map)) {
         cerr << "Fehler beim Einlesen der CSV-Datei!" << endl;
-        return 1;
+        statusCode = 500;
+        return statusCode;
     }
 
     float memoryBefore = getMemoryUsage();
@@ -123,8 +125,14 @@ int main(int argc, char* argv[]) {
     }
 
     if (startX == -1) {
-        cout << "Startpunkt nicht gefunden!" << endl;
-        return 1;
+        cout << "Start nicht gefunden!" << endl;
+        statusCode = 402;
+        return 402;
+    }
+    if (goalX == -1) {
+        cout << "Ziel nicht gefunden!" << endl;
+        statusCode = 403;
+        return 403;
     }
 
     auto startTime = chrono::high_resolution_clock::now();

@@ -156,6 +156,7 @@ pair<int, vector<pair<int, int>>> aStar(vector<vector<int>>& matrix, int startX,
 }
 
 int main(int argc, char* argv[]) {
+    int statusCode;
     if (argc < 4) {
         cerr << "Fehler: Zu wenige Argumente! Erwartet: <CSV-Datei> <JSON-Datei> <Heuristik>" << endl;
         return 1;
@@ -167,13 +168,15 @@ int main(int argc, char* argv[]) {
 
     if (heuristic != "manhattan" && heuristic != "airplane") {
         cerr << "Fehler: Ungültige Heuristik. Erlaubt sind 'manhattan' und 'airplane'." << endl;
-        return 1;
+        statusCode = 401;
+        return statusCode;
     }
 
     vector<vector<int>> matrix;
     if (readCsv(matrix, input_map)) {
         cerr << "Fehler beim Einlesen der CSV-Datei!" << endl;
-        return 1;
+        statusCode = 500;
+        return statusCode;
     }
 
     float memoryBefore = getMemoryUsage();
@@ -188,9 +191,15 @@ int main(int argc, char* argv[]) {
         }
     }
 
-    if (startX == -1 || goalX == -1) {
-        cout << "Start oder Ziel nicht gefunden!" << endl;
-        return 1;
+    if (startX == -1) {
+        cout << "Start nicht gefunden!" << endl;
+        statusCode = 402;
+        return 402;
+    }
+    if (goalX == -1) {
+        cout << "Ziel nicht gefunden!" << endl;
+        statusCode = 403;
+        return 403;
     }
 
     auto startTime = chrono::high_resolution_clock::now();
@@ -202,7 +211,7 @@ int main(int argc, char* argv[]) {
     auto endTime = chrono::high_resolution_clock::now();
     auto duration = chrono::duration_cast<chrono::nanoseconds>(endTime - startTime);
    
-    int statusCode = (distanceToGoal != -1) ? 0 : -1;
+    int statusCode = (distanceToGoal != -1) ? 200 : 404;
 
     float memoryAfter = getMemoryUsage();
     float memoryUsage = memoryAfter - memoryBefore;
