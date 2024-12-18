@@ -4,14 +4,12 @@
 ResultsWindow::ResultsWindow(Map& originalMap, const std::vector<Algorithm>& algorithms, vector<ParseJson>& parsedResults)
     : map(originalMap), algorithms(algorithms), parsedResults(parsedResults), button(sf::Vector2f(100, 30)), buttonText("Close", font, 20) {
     // Fenster initialisieren
-    window.create(sf::VideoMode(1800, 900), "Results");
+    window.create(sf::VideoMode(2000, 900), "Results");
 
     // Schriftart laden
     if (!font.loadFromFile("assets/arial.ttf")) {
         std::cerr << "Fehler beim Laden der Schriftart!" << std::endl;
     }
-
-
 
     for (const auto& result : parsedResults) {
         groupedResults[result.getAlgorithm()].push_back(&result);
@@ -49,11 +47,14 @@ void ResultsWindow::draw() {
 
     tileSize = 10;
     drawMap(map, 0, 50);
-    if (map.getWidth() > 12) {
-        tileSize = 25;
+    if (map.getWidth() < 13) {
+        tileSize = 30;
+    }
+    else if (map.getWidth() > 12 && map.getWidth() < 30) {
+        tileSize = 20;
     }
     else
-        tileSize = 40;
+        tileSize = 5;
 
 
 

@@ -39,6 +39,8 @@ private:
     // Referenz zur Karte
     Map& map;
 
+    int tileSize;
+    
     //Vektor für Algortihmen
     vector<Algorithm>& algorithms;
 
@@ -50,7 +52,7 @@ private:
 
     // Button (Rechteckform)
     sf::RectangleShape button;
-
+   
     // Button-Text
     sf::Text buttonText;
 
