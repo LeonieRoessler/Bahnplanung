@@ -403,3 +403,19 @@ FodyWeavers.xsd
 
 # IntelliJ Idea cache/options directory
 .idea/
+/Bahnplanungsalgorithmus/Java_Algorithms/AlgorithmResult.class
+/Bahnplanungsalgorithmus/Java_Algorithms/AStar.class
+/Bahnplanungsalgorithmus/Java_Algorithms
+/Bahnplanungsalgorithmus/result_AStarAP_Cpp.json
+/Bahnplanungsalgorithmus/result_AStarAP_Java.json
+/Bahnplanungsalgorithmus/result_AStarAP_Python.json
+/Bahnplanungsalgorithmus/result_AStarMH_Cpp.json
+/Bahnplanungsalgorithmus/result_AStarMH_Java.json
+/Bahnplanungsalgorithmus/result_AStarMH_Python.json
+/Bahnplanungsalgorithmus/result_Brushfire_Cpp.json
+/Bahnplanungsalgorithmus/result_Brushfire_Java.json
+/Bahnplanungsalgorithmus/result_Brushfire_Python.json
+/Bahnplanungsalgorithmus/result_Wavefront_Cpp.json
+/Bahnplanungsalgorithmus/result_Wavefront_Java.json
+/Bahnplanungsalgorithmus/result_Wavefront_Python.json
+/Bahnplanungsalgorithmus/map.csv
