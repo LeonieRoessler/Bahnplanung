@@ -6,9 +6,9 @@
 // Konstruktor
 MapWindow::MapWindow(Map& map, vector<Algorithm>& algorithms) : map(map), button(sf::Vector2f(100, 30)), buttonText("Action", font, 20), algorithms(algorithms) {
 
-    
+    tileSize = 20;
     // Fenster initialisieren
-    window.create(sf::VideoMode(map.getWidth() * 70+200, map.getHeight() * 60+100), "Map Editor");
+    window.create(sf::VideoMode(map.getWidth() * tileSize + tileSize * 20, map.getHeight() * tileSize +100), "Map Editor");
 
     // Schriftart laden
     if (!font.loadFromFile("assets/arial.ttf")) {
@@ -20,13 +20,13 @@ MapWindow::MapWindow(Map& map, vector<Algorithm>& algorithms) : map(map), button
 
     // Button initialisieren
     button.setFillColor(sf::Color::Blue);
-    button.setPosition(map.getWidth()* 50 + 10, map.getHeight() * 20);
+    button.setPosition(map.getWidth()* tileSize + 10, map.getHeight() * tileSize);
     button.setOutlineThickness(2);
     button.setOutlineColor(sf::Color::White);
 
     // Text für den Button
     buttonText.setFillColor(sf::Color::White);
-    buttonText.setPosition(map.getWidth() * 50 + 20, map.getHeight() * 20 ); // Zentriert auf dem Button
+    buttonText.setPosition(map.getWidth() * tileSize + 20, map.getHeight() * tileSize); // Zentriert auf dem Button
 }
 
 // Läuft die Hauptschleife für das Fenster
@@ -51,8 +51,8 @@ void MapWindow::draw() {
     // Zeichne die Karte
     for (int y = 0; y < map.getHeight(); ++y) {
         for (int x = 0; x < map.getWidth(); ++x) {
-            sf::RectangleShape tile(sf::Vector2f(50, 50));
-            tile.setPosition(x * 50, y * 50);
+            sf::RectangleShape tile(sf::Vector2f(tileSize, tileSize));
+            tile.setPosition(x * tileSize, y * tileSize);
             tile.setOutlineThickness(1);
             tile.setOutlineColor(sf::Color::Black);
 
@@ -95,9 +95,9 @@ void MapWindow::handleEvents() {
             sf::Vector2i mousePos = sf::Mouse::getPosition(window);
 
             // Prüfe, ob ein Kartenfeld angeklickt wurde
-            if (mousePos.y < map.getHeight() * 50) {
-                int x = mousePos.x / 50;
-                int y = mousePos.y / 50;
+            if (mousePos.y < map.getHeight() * tileSize) {
+                int x = mousePos.x / tileSize;
+                int y = mousePos.y / tileSize;
 
                 // Kachel umschalten (0 zu 1 oder 1 zu 0)
                 int currentValue = map.getTile(x, y);
@@ -122,9 +122,9 @@ void MapWindow::handleEvents() {
             sf::Vector2i mousePos = sf::Mouse::getPosition(window);
 
             // Prüfe, ob ein Kartenfeld angeklickt wurde
-            if (mousePos.y < map.getHeight() * 50) {
-                int x = mousePos.x / 50;
-                int y = mousePos.y / 50;
+            if (mousePos.y < map.getHeight() * tileSize) {
+                int x = mousePos.x / tileSize;
+                int y = mousePos.y / tileSize;
 
                 // Wenn auf ein existierendes Startfeld geklickt wird, zurücksetzen
                 if (map.getTile(x, y) == 2) {
@@ -155,9 +155,9 @@ void MapWindow::handleEvents() {
             sf::Vector2i mousePos = sf::Mouse::getPosition(window);
 
             // Prüfe, ob ein Kartenfeld angeklickt wurde
-            if (mousePos.y < map.getHeight() * 50) {
-                int x = mousePos.x / 50;
-                int y = mousePos.y / 50;
+            if (mousePos.y < map.getHeight() * tileSize) {
+                int x = mousePos.x / tileSize;
+                int y = mousePos.y / tileSize;
 
                 if (map.getTile(x, y) == 3) {
                     map.setTile(x, y, 0);
@@ -271,7 +271,7 @@ void MapWindow::drawCheckboxes() {
 
 void MapWindow::initCheckboxes() {
     //Labels erstellen
-    int xStart = map.getWidth() * 60 + 50;
+    int xStart = map.getWidth() * tileSize + 50;
 
     for (int i = 0; i < 4; i++) {
         alg_label[i].setFont(font);

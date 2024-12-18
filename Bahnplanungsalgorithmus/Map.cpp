@@ -38,3 +38,48 @@ int Map::getWidth() const {
 int Map::getHeight() const {
     return height;
 }
+
+
+Map Map::loadFromCSV(const string& filename) {
+    ifstream file(filename);
+    if (!file.is_open()) {
+        throw runtime_error("Datei konnte nicht geöffnet werden: " + filename);
+    }
+
+    vector<std::vector<int>> tiles;
+    string line;
+
+    // Lies Zeile für Zeile
+    while (std::getline(file, line)) {
+        vector<int> row;
+        stringstream ss(line);
+        string cell;
+
+        // Teile die Zeile in Zellen (getrennt durch Kommata)
+        while (getline(ss, cell, ',')) {
+            row.push_back(stoi(cell)); // Konvertiere jede Zelle in einen Integer
+        }
+
+        tiles.push_back(row);
+    }
+
+    file.close();
+
+    if (tiles.empty()) {
+        throw runtime_error("CSV-Datei ist leer: " + filename);
+    }
+
+    // Erstelle ein Map-Objekt mit den Dimensionen aus der CSV
+    int height = tiles.size();
+    int width = tiles[0].size();
+    Map map(width, height);
+
+    // Übertrage die Werte in das Map-Objekt
+    for (int y = 0; y < height; ++y) {
+        for (int x = 0; x < width; ++x) {
+            map.setTile(x, y, tiles[y][x]);
+        }
+    }
+
+    return map;
+}
