@@ -43,18 +43,28 @@ void ResultsWindow::close() {
 
 void ResultsWindow::draw() {
     window.clear(sf::Color(169, 169, 169));
-    int xOffset = map.getWidth()*10 + 5; // Startposition für die Darstellung der Karten und Ergebnisse
-
-    tileSize = 10;
-    drawMap(map, 0, 50);
+    int xOffset = map.getWidth() * 10 + 5; // Startposition für die Darstellung der Karten und Ergebnisse
     if (map.getWidth() < 13) {
+        tileSize = 10;
+        drawMap(map, 0, 50);
         tileSize = 30;
     }
     else if (map.getWidth() > 12 && map.getWidth() < 30) {
+        tileSize = 10;
+        drawMap(map, 0, 50);
         tileSize = 20;
     }
-    else
+    else if (map.getWidth() > 30 && map.getWidth() < 70) {
+        tileSize = 2;
+        drawMap(map, 0, 50);
+        xOffset = map.getWidth() * 5 + 5;
         tileSize = 5;
+    }
+    else
+        tileSize = 2;
+        drawMap(map, 0, 50);
+        xOffset = map.getWidth() * 2 + 5;
+        tileSize = 3;
 
 
 
@@ -69,9 +79,10 @@ void ResultsWindow::draw() {
             float computingTime = result->getComputingTime();
             float memoryUsage = result->getMemoryUsage();
             int pathLength = result->pathLength;
-            drawPath(map, result->getPath(), xOffset, 50);
-            drawNumbers(result->getAlgorithmMap(), xOffset, 50);
             mapWidth = result->getAlgorithmMap().getWidth();
+            drawPath(map, result->getPath(), xOffset, 50);
+            if (mapWidth < 25)
+                drawNumbers(result->getAlgorithmMap(), xOffset, 50);
             string info = language + ": ";
             drawText(info, xOffset, 100 + result->getAlgorithmMap().getHeight() * tileSize + yOffset);
             info = "Computing Time: " + to_string(computingTime) + "ms";
@@ -83,7 +94,13 @@ void ResultsWindow::draw() {
 
             yOffset+=100;
         }
-        xOffset += mapWidth * tileSize - tileSize;
+        
+        if (mapWidth * tileSize - tileSize < 400) {
+            xOffset += 400;
+        }
+        else {
+            xOffset += mapWidth * tileSize - tileSize;
+        }
     }
 
 

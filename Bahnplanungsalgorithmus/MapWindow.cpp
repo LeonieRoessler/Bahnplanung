@@ -7,8 +7,11 @@
 MapWindow::MapWindow(Map& map, vector<Algorithm>& algorithms) : map(map), button(sf::Vector2f(100, 30)), buttonText("Action", font, 20), algorithms(algorithms) {
 
     tileSize = 20;
+    if (map.getWidth() > 50) {
+        tileSize = 5;
+    }
     // Fenster initialisieren
-    window.create(sf::VideoMode(map.getWidth() * tileSize + tileSize * 20, map.getHeight() * tileSize +100), "Map Editor");
+    window.create(sf::VideoMode(map.getWidth() * tileSize + 500, map.getHeight() * tileSize + tileSize * 5+100), "Map Editor");
 
     // Schriftart laden
     if (!font.loadFromFile("assets/arial.ttf")) {
