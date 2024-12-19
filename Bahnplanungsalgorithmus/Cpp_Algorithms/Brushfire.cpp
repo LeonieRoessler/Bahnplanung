@@ -13,9 +13,6 @@
 using namespace std;
 using json = nlohmann::json;
 
-// Bewegungsrichtungen: Oben, Unten, Links, Rechts
-const int directions[4][2] = { {-1, 0}, {1, 0}, {0, -1}, {0, 1} };
-
 // Funktion, um den Arbeitsspeicherverbrauch des aktuellen Prozesses zu messen
 float getMemoryUsage() {
     PROCESS_MEMORY_COUNTERS_EX pmc;
@@ -67,26 +64,42 @@ int readCsv(vector<vector<int>>& matrix, const string& filename) {
     return 0;
 }
 
-// Brushfire-Algorithmus
-void brushfire(vector<vector<int>>& matrix, int startX, int startY, vector<vector<int>>& visited) {
+
+void brushfire(vector<vector<int>>& matrix, vector<vector<int>>& visited) {
     int rows = matrix.size();
     int cols = matrix[0].size();
     queue<pair<int, int>> q;
 
-    visited[startX][startY] = 0;  // Startpunkt hat Entfernung 0
-    q.push({ startX, startY });
+    // Alle Hindernisse (matrix[i][j] == 1) als Startpunkte hinzufügen
+    for (int i = 0; i < rows; i++) {
+        for (int j = 0; j < cols; j++) {
+            if (matrix[i][j] == 1) {
+                visited[i][j] = 0; // Hindernisse haben Distanz 0
+                q.push({ i, j });
+            }
+            else {
+                visited[i][j] = -1; // Nicht besuchte Felder setzen auf -1
+            }
+        }
+    }
+    // Richtung für Nachbarn (oben, unten, links, rechts)
+    vector<pair<int, int>> directions = { {-1, 0}, {1, 0}, {0, -1}, {0, 1} };
 
     while (!q.empty()) {
         auto [x, y] = q.front();
         q.pop();
 
         for (const auto& dir : directions) {
-            int nx = x + dir[0];
-            int ny = y + dir[1];
+            int nx = x + dir.first;
+            int ny = y + dir.second;
 
+            // Bedingungen prüfen:
+            // 1. Innerhalb der Grenzen
+            // 2. Kein Hindernis
+            // 3. Noch nicht besucht (visited[nx][ny] == -1)
             if (nx >= 0 && nx < rows && ny >= 0 && ny < cols && matrix[nx][ny] != 1 && visited[nx][ny] == -1) {
-                visited[nx][ny] = visited[x][y] + 1;  // Entfernungswert setzen
-                q.push({ nx, ny });
+                visited[nx][ny] = visited[x][y] + 1; // Entfernungswert setzen
+                q.push({ nx, ny }); // Nachbarn in die Queue einfügen
             }
         }
     }
@@ -111,28 +124,14 @@ int main(int argc, char* argv[]) {
 
     float memoryBefore = getMemoryUsage();
 
-    int startX = -1, startY = -1;
     int rows = matrix.size();
     int cols = matrix[0].size();
 
-    for (int i = 0; i < rows; i++) {
-        for (int j = 0; j < cols; j++) {
-            if (matrix[i][j] == 2) {  // Startpunkt gefunden
-                startX = i;
-                startY = j;
-            }
-        }
-    }
 
-    if (startX == -1) {
-        cout << "Start nicht gefunden!" << endl;
-        statusCode = 402;
-        return 402;
-    }
     auto startTime = chrono::high_resolution_clock::now();
 
     vector<vector<int>> visited(rows, vector<int>(cols, -1));  // -1 bedeutet "nicht besucht"
-    brushfire(matrix, startX, startY, visited);
+    brushfire(matrix, visited);
 
     auto endTime = chrono::high_resolution_clock::now();
     auto duration = chrono::duration_cast<chrono::nanoseconds>(endTime - startTime);
