@@ -60,11 +60,17 @@ void ResultsWindow::draw() {
         xOffset = map.getWidth() * 2 + 5;
         tileSize = 5;
     }
-    else {
+    else if (map.getWidth() > 70 && map.getWidth() < 100) {
         tileSize = 2;
         drawMap(map, 0, 50);
         xOffset = map.getWidth() * 2 + 5;
         tileSize = 3;
+    }
+    else {
+        tileSize = 2;
+        //drawMap(map, 0, 50);
+        xOffset =  5;
+        tileSize = 2;
     }
 
 
