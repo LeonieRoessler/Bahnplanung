@@ -99,6 +99,7 @@ pair<int, vector<pair<int, int>>> aStar(vector<vector<int>>& matrix, int startX,
 
     vector<vector<int>> gScore(rows, vector<int>(cols, INT_MAX));
     vector<vector<int>> fScore(rows, vector<int>(cols, INT_MAX));
+    visited[startX][startY] = 0;
 
     auto compare = [&](const pair<int, int>& a, const pair<int, int>& b) {
         return fScore[a.first][a.second] > fScore[b.first][b.second];
